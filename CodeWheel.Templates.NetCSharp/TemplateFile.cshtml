@@ -1,0 +1,15 @@
+﻿@model CodeWheel.Templates.NetCSharp.DataEntity
+@Model.ImportNameSpace
+
+namespace @Model.NameSpace
+{
+    public class @(Model.ClassPre + Model.CurrentTable.TableName)
+    {
+        @foreach (var col in Model.CurrentTable.Columns)
+        {
+            @:private @(col.FieldTypeName) m_@(col.ColumnName);
+            @:public @(col.FieldTypeName) @(col.ColumnName){get;set;}
+        }
+
+    } 
+}
