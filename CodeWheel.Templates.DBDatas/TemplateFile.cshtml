@@ -3,13 +3,235 @@
 
 namespace @Model.NameSpace
 {
-    public class @(Model.ClassPre + Model.CurrentTable.TableName)
+    public partial class @(Model.CurrentTable.TableName + Model.ClassFix)
     {
-        @foreach (var col in Model.CurrentTable.Columns)
+
+        /// <summary>
+        /// 增加
+        /// </summary>
+        public static bool Create(@(Model.ClassPre + Model.CurrentTable.TableName) @(Model.CurrentTable.TableName.ToLower()))
+        {
+            string sql="Insert into `@(Model.CurrentTable.TableName)` (@Model.InsertParameterList(false)) values (@Model.InsertArgumentList(false))";
+            DbParameter[] parameters = new DbParameter[] { 
+                @(Model.CreateDbParameterList(Model.DBHelper, Model.CurrentTable.TableName, false))
+            };
+
+            if (@(Model.DBHelper).ExecuteNonQuery(sql, CommandType.Text, parameters) > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        
+        /// <summary>
+        /// 增加
+        /// </summary>
+        public static bool Create(out int id,@(Model.ClassPre + Model.CurrentTable.TableName) @(Model.CurrentTable.TableName.ToLower()))
+        {
+            string sql="Insert into `@(Model.CurrentTable.TableName)` (@Model.InsertParameterList(false)) values (@Model.InsertArgumentList(false))";
+            DbParameter[] parameters = new DbParameter[] { 
+                @(Model.CreateDbParameterList(Model.DBHelper, Model.CurrentTable.TableName, false))
+            };
+
+            if (@(Model.DBHelper).ExecuteNonQuery(out id,sql, CommandType.Text, parameters) > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 增加
+        /// </summary>
+        public static bool Create(@Model.MethodParameterList(false))
+        {
+            string sql="Insert into `@(Model.CurrentTable.TableName)` (@Model.InsertParameterList(false)) values (@Model.InsertArgumentList(false))";
+            DbParameter[] parameters = new DbParameter[] { 
+                    @(Model.CreateDbParameterList(Model.DBHelper, "", false))
+            };
+
+            if (@(Model.DBHelper).ExecuteNonQuery(sql, CommandType.Text, parameters) > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        
+
+        @foreach(var col in Model.CurrentTable.Columns.GetKeyCollection())
+        {
+        @:/// <summary>
+        @:/// 删除通过@(col.ColumnName)
+        @:/// </summary>
+        @:public static bool RemoveBy@(col.ColumnName)(@(col.FieldTypeName) @(col.ColumnName.ToLower()))
+        @:{
+            @:string sql="delete from `@(Model.CurrentTable.TableName)`  where `@(col.ColumnName)`=@@@(col.ColumnName)";
+            @:DbParameter[] parameters = new DbParameter[] { 
+            @:    @(Model.DBHelper).MakeInParam ("@@@(col.ColumnName)",DbType .@col.FieldTypeName,@col.ColumnSize,@col.ColumnName.ToLower() )
+            @:};
+            @:
+            @:if (@(Model.DBHelper).ExecuteNonQuery(sql, CommandType.Text, parameters) > 0)
+            @:{
+            @:    return true;
+            @:}
+            @:return false;
+        @:}
+
+        }
+
+
+        
+        /// <summary>
+        /// 修改
+        /// </summary>
+        public static bool Update(@(Model.ClassPre + Model.CurrentTable.TableName) @(Model.CurrentTable.TableName.ToLower()))
+        {
+            string sql="Update `@Model.CurrentTable.TableName` set @Model.CreateUpdateArgumentList(false) where @Model.CreateSqlWhere()";
+            DbParameter[] parameters = new DbParameter[] { 
+                @(Model.CreateDbParameterList(Model.DBHelper, Model.CurrentTable.TableName, true))
+            };
+
+            if (@(Model.DBHelper).ExecuteNonQuery(sql, CommandType.Text, parameters) > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+        
+
+
+        
+        /// <summary>
+        /// 修改
+        /// </summary>
+        public static bool Update(@Model.MethodParameterList(true))
+        {
+            string sql="Update `@Model.CurrentTable.TableName` set @Model.CreateUpdateArgumentList(false) where @Model.CreateSqlWhere()";
+            DbParameter[] parameters = new DbParameter[] { 
+                @(Model.CreateDbParameterList(Model.DBHelper, "", true))
+            };
+
+            if (@(Model.DBHelper).ExecuteNonQuery(sql, CommandType.Text, parameters) > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 读取全部列表
+        /// </summary>
+        public static List<@(Model.ClassPre + Model.CurrentTable.TableName)> ReadList()
+        {
+			string sql="select * from `@(Model.CurrentTable.TableName)`";
+
+			return @(Model.DBHelper).Query<@(Model.ClassPre + Model.CurrentTable.TableName)>(sql);
+        }
+
+        /// <summary>
+        /// 分页读取列表
+        /// </summary>
+        public static List<@(Model.ClassPre + Model.CurrentTable.TableName)> ReadListPaged(out Int32 fieldCount,Int32 pageIndex,Int32 pageSize)
+        {
+			string sql="select count(1) from `@(Model.CurrentTable.TableName)`";
+			object ret=@(Model.DBHelper).ExecuteScalar (sql);
+			fieldCount = TypeConverter.ObjectToInt (ret,0);
+
+            if (fieldCount <= 0)
+            {
+                return new List<@(Model.ClassPre + Model.CurrentTable.TableName)>();
+            }
+
+            Int32 pageCount = fieldCount / pageSize;
+            if ((fieldCount % pageSize) > 0)
+            {
+                pageCount++;
+            }
+
+            if (pageIndex <1)
+            {
+                pageIndex = 1;
+            }
+            if (pageIndex > pageCount)
+            {
+                pageIndex = pageCount;
+            }
+
+            sql = "select * from `@(Model.CurrentTable.TableName)` limit "+((pageIndex -1)*pageSize).ToString () +","+pageSize.ToString ();
+            return @(Model.DBHelper).Query<@(Model.ClassPre + Model.CurrentTable.TableName)>(sql);
+        }
+
+
+        
+        
+        @foreach(var col in Model.GetKeyColumn())
+        {
+        
+        @:/// <summary>
+        @:/// 通过主键读取实体
+        @:/// </summary>
+        @:public static @(Model.ClassPre + Model.CurrentTable.TableName) ReadBy@(col.ColumnName)(@col.FieldTypeName @col.ColumnName.ToLower())
+        @:{
+        @:    string sql= "select * from `@Model.CurrentTable.TableName`  where `@col.ColumnName`=@@@col.ColumnName";
+        @:        DbParameter[] parameters = new DbParameter[] {
+        @:        @Model.CreateDbParameter(Model.DBHelper, "",col)
+        @:    };
+
+        @:        return @(Model.DBHelper).QueryOne<@(Model.ClassPre + Model.CurrentTable.TableName)>(sql, CommandType.Text, parameters);
+        @:}
+        
+            foreach(var other in Model.GetNoKeyColumn())
+            {
+        @:/// <summary>
+        @:/// 通过主键读取@(other.ColumnName)
+        @:/// </summary>
+        @:public static @other.FieldTypeName Get@(other.ColumnName)By@(col.ColumnName)(@col.FieldTypeName @col.ColumnName.ToLower(),@other.FieldTypeName defaultVal)
+        @:{
+        @:    string sql="select `@other.ColumnName`  from `@Model.CurrentTable.TableName`  where `@col.ColumnName`=@@@col.ColumnName";
+        @:    DbParameter[] parameters = new DbParameter[] { 
+        @:          @Model.CreateDbParameter(Model.DBHelper, "", col)
+        @:    };
+        @:    object ret=@(Model.DBHelper).ExecuteScalar (sql,CommandType .Text ,parameters);
+        @:
+        @:
+        @:    try
+        @:    {
+                if (other.FieldTypeName=="Guid")
+                {
+        @:          return TypeConverter.ObjectToGuid(ret);
+                }
+                else
+                {
+        @:        return Convert.To@(other.FieldTypeName)(ret);
+                }
+        
+        @:    }
+        @:    catch
+        @:    {
+        @:        return defaultVal;
+        @:    }
+        @:}
+
+        @:/// <summary>
+        @:/// 通过主键读取@(other.ColumnName)
+        @:/// </summary>
+        @:public static @(other.FieldTypeName) Get@(other.ColumnName)By@(col.ColumnName)(@col.FieldTypeName @col.ColumnName.ToLower())
+        @:{
+        @:    return Get@(other.ColumnName)By@(col.ColumnName)(@col.ColumnName.ToLower(),default(@other.FieldTypeName));                   
+        @:}
+        
+
+            }
+        }
+        
+
+        @*@foreach (var col in Model.CurrentTable.Columns)
         {
             @:private @(col.FieldTypeName) m_@(col.ColumnName);
             @:public @(col.FieldTypeName) @(col.ColumnName){get;set;}
-        }
+        }*@
 
     } 
 }

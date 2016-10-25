@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\CodeWheel\Templates\DBDatas\</OutputPath>
+    <OutputPath>..\CodeWheel\bin\Templates\DBDatas\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -24,7 +24,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\CodeWheel\Templates\DBDatas\</OutputPath>
+    <OutputPath>..\CodeWheel\bin\Templates\DBDatas\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -39,19 +39,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RealTemplate.cs" />
     <Compile Include="DataEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RealTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TemplateFile.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="TemplateFile.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodeWheel.Model\CodeWheel.Model.csproj">
-      <Project>{25b8f984-974d-4be0-84df-f98fdf77a548}</Project>
-      <Name>CodeWheel.Model</Name>
+    <ProjectReference Include="..\CodeWheel\CodeWheel.csproj">
+      <Project>{9b8c29a6-a3a5-4bef-a7ae-c92eef8d6d33}</Project>
+      <Name>CodeWheel</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

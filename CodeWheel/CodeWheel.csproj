@@ -21,7 +21,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -30,10 +30,13 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Asserts\logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
@@ -97,6 +100,23 @@
     <Compile Include="Dialogs\DBSelectDialog.xaml.cs">
       <DependentUpon>DBSelectDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Model\DB\ColumnMeta.cs" />
+    <Compile Include="Model\DB\ColumnMetaCollection.cs" />
+    <Compile Include="Model\DB\DatabaseMeta.cs" />
+    <Compile Include="Model\DB\DataViewModelBase.cs" />
+    <Compile Include="Model\DB\Providers\IDBProvider.cs" />
+    <Compile Include="Model\DB\Providers\MySqlProvider.cs" />
+    <Compile Include="Model\DB\Providers\ProviderFactory.cs" />
+    <Compile Include="Model\DB\Providers\SqliteProvider.cs" />
+    <Compile Include="Model\DB\Providers\SqlServerProvider.cs" />
+    <Compile Include="Model\DB\TableMeta.cs" />
+    <Compile Include="Model\ITemplate.cs" />
+    <Compile Include="Model\RunTemplateDelegate.cs" />
+    <Compile Include="Model\TemplateInfo.cs" />
+    <Compile Include="Model\TypeConverter.cs" />
+    <Compile Include="Model\VarInfoAttribute.cs" />
+    <Compile Include="Model\VarType.cs" />
     <Compile Include="Utils\RazorProvider.cs" />
     <Compile Include="ViewModels\DBSelectDialogViewModel.cs" />
     <Compile Include="ViewModels\DelegateCommand.cs" />
@@ -172,48 +192,12 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <Content Include="Templates\DBDatas\TemplateFile.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\DBModel\TemplateFile.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\NetCSharp\TemplateFile.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\NetC\TemplateFile.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\NetJava\TemplateFile.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <ProjectReference Include="..\CodeWheel.Model\CodeWheel.Model.csproj">
-      <Project>{25b8f984-974d-4be0-84df-f98fdf77a548}</Project>
-      <Name>CodeWheel.Model</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Templates\DBDatas\CodeWheel.Templates.DBDatas.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\DBModel\CodeWheel.Templates.DBModel.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\NetCSharp\CodeWheel.Templates.NetCSharp.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\NetC\CodeWheel.Templates.NetC.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\NetJava\CodeWheel.Templates.NetJava.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\readme.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="Asserts\logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Asserts\wheel.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.102.0\build\net40\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.102.0\build\net40\System.Data.SQLite.Core.targets')" />

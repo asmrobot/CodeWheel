@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Workstation.T4
+namespace CodeWheel.Extensions
 {
-    public static class EnumableStringExistenion
+    public static class StringExtensions
     {
+
         #region 字符串连接
 
         /// <summary>
@@ -75,7 +75,5 @@ namespace Workstation.T4
             return false;
         }
         #endregion
-
-
     }
 }

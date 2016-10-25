@@ -5,6 +5,7 @@ using CodeWheel.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -47,7 +48,7 @@ namespace CodeWheel
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
-        private UserControl CreateElement(VarInfo info)
+        private UserControl CreateElement(VarInfoAttribute info)
         {
             UserControl control = null;
             switch (info.VarType)
@@ -141,7 +142,8 @@ namespace CodeWheel
                     return;
                 }
 
-                Dictionary<string, object> parameters = new Dictionary<string, object>();
+
+                object viewmodel=System.Activator.CreateInstance(info.ViewModelType);
                 //向页面传值
                 for (int i = 0; i < info.Vars.Count; i++)
                 {
@@ -151,8 +153,12 @@ namespace CodeWheel
                         info.Vars[i].VarData = null;
                         continue;
                     }
-
-                    parameters.Add(info.Vars[i].VarName, uc.GetValue());
+                    PropertyInfo property=info.ViewModelType.GetProperty(info.Vars[i].VarName);
+                    if (property == null)
+                    {
+                        continue;
+                    }
+                    property.SetValue(viewmodel, uc.GetValue(),null);
                 }
 
                 var template = this.Provider.GetTemplate(info.Name);
@@ -162,7 +168,7 @@ namespace CodeWheel
                 }
 
                 string msg = string.Empty;
-                if (template.CreateFiles(out msg,this.Provider.RunService, parameters))
+                if (template.CreateFiles(out msg,this.Provider.RunService, viewmodel))
                 {
                     MessageBox.Show("生成成功");
                 }

@@ -10,7 +10,11 @@ namespace CodeWheel.Model
     /// </summary>
     public class TemplateInfo
     {
-        public string TemplateFile{ get; set; }
+        public TemplateInfo()
+        {
+            this.Vars = new List<VarInfoAttribute>();
+        }
+        public string TemplateContent{ get; set; }
 
         /// <summary>
         /// 模板名称
@@ -20,13 +24,13 @@ namespace CodeWheel.Model
         /// <summary>
         /// 传递到模板的实体类型
         /// </summary>
-        public Type ModelType { get; set; }
+        public Type ViewModelType { get; set; }
 
 
         /// <summary>
         /// 变量列表
         /// </summary>
-        public List<VarInfo> Vars { get; set; }
+        internal List<VarInfoAttribute> Vars { get; set; }
 
 
 

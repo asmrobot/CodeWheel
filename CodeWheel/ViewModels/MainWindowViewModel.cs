@@ -22,33 +22,13 @@ namespace CodeWheel.ViewModels
 
             for (int i = 0; i < Provider.Templates.Count; i++)
             {
-                var tinfo=Provider.Templates[i].GetBaseInfo();
+                var tinfo = Provider.Templates[i].GetTemplateInfo();
                 if (tinfo != null)
                 {
+                    tinfo.Vars = Provider.GetVarInfo(tinfo.ViewModelType);
                     this.m_TemplateList.Add(tinfo);
                 }
             }
-
-
-
-
-
-            //this.m_TemplateList.Add(new TemplateInfo()
-            //{
-            //    TemplateName = "实体生成",
-            //    VarList = new List<VarInfo>() {
-            //        new VarInfo() { VarTitle="命名空间",VarName="modelnamespace",VarType=VarType.V_String,VarDefault="using System;"},
-            //        new VarInfo() { VarTitle="行号",VarName="modelrowno",VarType=VarType.V_Int,VarDefault="3"},
-            //        new VarInfo() { VarTitle="引入包",VarName="modelimport",VarType=VarType.V_String,VarDefault="using System;"},
-            //        new VarInfo() { VarTitle="是否生成文件",VarName="modelgenricfile",VarType=VarType.V_Boolean,VarDefault="true"},
-            //        new VarInfo() { VarTitle="生成日期",VarName="modelgenericdt",VarType=VarType.V_DateTime,VarDefault="2016-12-23"},
-            //        new VarInfo() { VarTitle="生成文件",VarName="modelgenericgetfile",VarType=VarType.V_File,VarDefault="d:/ss.txt"},
-            //        new VarInfo() { VarTitle="生成路径",VarName="modelgenericgetpath",VarType=VarType.V_Path,VarDefault="d:/ss/ww"},
-            //        new VarInfo() { VarTitle="数据库",VarName="modelgetdb",VarType=VarType.V_DB,VarDefault="d:/ss/ww"},
-            //    }
-            //});
-
-
         }
 
         private ObservableCollection<TemplateInfo> m_TemplateList;
@@ -92,7 +72,6 @@ namespace CodeWheel.ViewModels
                     this.RaisePropertyChanged("TemplateSelectIndex");
                 }
             }
-
         }
 
 

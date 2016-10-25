@@ -14,13 +14,13 @@ namespace CodeWheel.Model
         /// 得到基本信息
         /// </summary>
         /// <returns></returns>
-        TemplateInfo GetBaseInfo();
+        TemplateInfo GetTemplateInfo();
 
         /// <summary>
         /// 使用得到的信息生成模板
         /// </summary>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        bool CreateFiles(out string msg,RunTemplateDelegate method,Dictionary<string, object> parameters);
+        bool CreateFiles(out string msg,RunTemplateDelegate method,object parameters);
     }
 }

@@ -16,7 +16,7 @@ namespace CodeWheel.Model
         V_DateTime,//datetime,选择日期
         V_DB,//db,选择数据库
         V_Path,//path,选择路径
-        V_File//file,选择文件
+        V_File,//file,选择文件
     }
 
 }

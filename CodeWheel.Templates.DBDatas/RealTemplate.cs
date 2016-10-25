@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace CodeWheel.Templates.DBDatas
@@ -13,57 +14,28 @@ namespace CodeWheel.Templates.DBDatas
     /// </summary>
     public class RealTemplate : ITemplate
     {
-        public const string KEY = "数据访问层";
-        public bool CreateFiles(out string msg,RunTemplateDelegate method, Dictionary<string, object> parameters)
+        public const string KEY = "数据库访问层";
+        public bool CreateFiles(out string msg,RunTemplateDelegate method, object parameters)
         {
             msg = string.Empty;
-            DataEntity entity = new DataEntity();
-            if (!parameters.ContainsKey("savepath"))
-            {
-                msg = "请设置保存路径";
-                return false;
-            }
-            if (parameters["savepath"] == null)
+            DataEntity entity = parameters as DataEntity;
+            
+            if (string.IsNullOrWhiteSpace(entity.SavePath))
             {
                 msg = "保存路径不能为空";
                 return false;
             }
-            entity.SavePath = parameters["savepath"].ToString();
-            if (!parameters.ContainsKey("namespace"))
-            {
-                msg = "默名空间不能为空";
-                return false;
-            }
-
-            entity.NameSpace = parameters["namespace"].ToString();
-
-            if (parameters.ContainsKey("importnamespace"))
-            {
-                entity.ImportNameSpace = parameters["importnamespace"].ToString();
-            }
-
-            if (!parameters.ContainsKey("database"))
-            {
-                msg = "请选择数据库";
-                return false;
-            }
-
-            entity.Database = parameters["database"] as DatabaseMeta;
+            
             if (entity.Database == null)
             {
                 msg = "选择的数据库不存在";
                 return false;
             }
-
-            if (parameters.ContainsKey("classpre"))
-            {
-                entity.ClassPre = parameters["classpre"].ToString();
-            }
-
+            
             for (int i = 0; i < entity.Database.Tables.Count; i++)
             {
                 entity.CurrentTable = entity.Database.Tables[i];
-                string file = Path.Combine(entity.SavePath, entity.ClassPre+entity.CurrentTable.TableName + ".cs");
+                string file = Path.Combine(entity.SavePath, entity.CurrentTable.TableName+entity.ClassFix + ".cs");
                 
                 if (!method(file, KEY, typeof(DataEntity), entity))
                 {
@@ -74,19 +46,16 @@ namespace CodeWheel.Templates.DBDatas
             return true;
         }
 
-        public TemplateInfo GetBaseInfo()
+        public TemplateInfo GetTemplateInfo()
         {
             TemplateInfo info = new TemplateInfo();
+            Assembly asm = System.Reflection.Assembly.GetAssembly(this.GetType());
+            Stream stream = asm.GetManifestResourceStream(string.Concat(asm.GetName().Name, ".TemplateFile.cshtml"));
+            StreamReader reader = new StreamReader(stream);
+            info.TemplateContent = reader.ReadToEnd();
+            stream.Close();
             info.Name = KEY;
-            info.ModelType = typeof(DataEntity);
-            info.TemplateFile = "DBDatas\\TemplateFile.cshtml";
-            info.Vars = new List<VarInfo>();
-            info.Vars.Add( new VarInfo("保存路径", "savepath", "d:\\", VarType.V_Path));
-            info.Vars.Add(new VarInfo("命名空间", "namespace", "Models", VarType.V_String));
-            info.Vars.Add(new VarInfo("导入命名空间", "importnamespace", "using System;", VarType.V_String));
-            info.Vars.Add(new VarInfo("数据库", "database", "", VarType.V_DB));
-            info.Vars.Add(new VarInfo("类型前缀", "classpre", "T_", VarType.V_String));
-            
+            info.ViewModelType = typeof(DataEntity);
             return info;
         }
     }

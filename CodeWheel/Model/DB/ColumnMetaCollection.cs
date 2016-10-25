@@ -25,6 +25,42 @@ namespace CodeWheel.Model.DB
                 }
             }
         }
+
+        /// <summary>
+        /// 得到没有主键的集合
+        /// </summary>
+        public ColumnMetaCollection GetNoKeyCollection()
+        {
+            ColumnMetaCollection collection = new ColumnMetaCollection();
+            foreach (var item in this)
+            {
+                if (!item.IsKey)
+                {
+                    collection.Add(item);
+                }
+            }
+            return collection;
+        }
+
+
+        /// <summary>
+        /// 得到主键的集合
+        /// </summary>
+        public ColumnMetaCollection GetKeyCollection()
+        {
+            ColumnMetaCollection collection = new ColumnMetaCollection();
+            foreach (var item in this)
+            {
+                if (item.IsKey)
+                {
+                    collection.Add(item);
+                }
+            }
+            return collection;
+        }
+
+
+
         private Dictionary<string, ColumnMeta> m_list = new Dictionary<string, ColumnMeta>();
 
         public int Count

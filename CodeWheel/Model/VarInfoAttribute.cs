@@ -11,16 +11,16 @@ namespace CodeWheel.Model
     /// <summary>
     /// 变量信息
     /// </summary>
-    public class VarInfo
+    [AttributeUsage(AttributeTargets.Property)]
+    public class VarInfoAttribute:Attribute
     {
-        public VarInfo()
+        public VarInfoAttribute()
         {
 
         }
-        public VarInfo(string title,string name,string def,VarType type)
+        public VarInfoAttribute(string title,string def,VarType type)
         {
             this.VarTitle = title;
-            this.VarName = name;
             this.VarDefault = def;
             this.VarType = type;
             this.VarData = null;

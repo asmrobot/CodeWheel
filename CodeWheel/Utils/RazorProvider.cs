@@ -68,7 +68,7 @@ namespace CodeWheel.Utils
         {
             for (int i = 0; i < this.Templates.Count; i++)
             {
-                if (this.Templates[i].GetBaseInfo().Name == templateName)
+                if (this.Templates[i].GetTemplateInfo().Name == templateName)
                 {
                     return this.Templates[i];
                 }
@@ -111,12 +111,18 @@ namespace CodeWheel.Utils
                         {
                             continue;
                         }
+                        
+                        
+                        
+
                         //编译模板
-                        TemplateInfo tinf = template.GetBaseInfo();
+                        TemplateInfo tinf = template.GetTemplateInfo();
                         if (tinf == null)
                         {
                             continue;
                         }
+                        tinf.Vars = GetVarInfo(tinf.ViewModelType);
+
                         if (!Compile(tinf))
                         {
                             continue;
@@ -141,6 +147,36 @@ namespace CodeWheel.Utils
             return true;
         }
 
+        /// <summary>
+        /// 得到类型的变量信息
+        /// </summary>
+        /// <param name="modelType"></param>
+        /// <returns></returns>
+        internal List<VarInfoAttribute> GetVarInfo(Type modelType)
+        {
+            List<VarInfoAttribute> list = new List<VarInfoAttribute>();
+
+            if (modelType != null)
+            {
+                PropertyInfo[] propertys = modelType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                foreach (PropertyInfo item in propertys)
+                {
+                    //填充tinf.Vars
+                    object[] attribtes = item.GetCustomAttributes(typeof(VarInfoAttribute), false);
+                    if (attribtes.Length >= 1)
+                    {
+                        VarInfoAttribute attr = attribtes[0] as VarInfoAttribute;
+                        if (attr != null)
+                        {
+                            attr.VarName = item.Name;
+                            list.Add(attr);
+                        }
+                    }
+                }
+            }
+            return list;
+        }
+
 
         /// <summary>
         /// 编译
@@ -149,10 +185,22 @@ namespace CodeWheel.Utils
         /// <returns></returns>
         public bool Compile(TemplateInfo info)
         {
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", info.TemplateFile);
-            if (!File.Exists(path))
+            if (string.IsNullOrEmpty(info.TemplateContent))
             {
                 return false;
+            }
+
+            InitRazorEngine();
+            Engine.Razor.Compile(info.TemplateContent, info.Name, info.ViewModelType);
+            return true;
+        }
+
+        private bool RazorEngineIsInit = false;
+        private void InitRazorEngine()
+        {
+            if (RazorEngineIsInit)
+            {
+                return;
             }
             TemplateServiceConfiguration conf = new TemplateServiceConfiguration();
             conf.Language = Language.CSharp;
@@ -162,22 +210,10 @@ namespace CodeWheel.Utils
             conf.Debug = true;
 
 
+
             var service = RazorEngineService.Create(conf);
             Engine.Razor = service;
-
-            string template = string.Empty;
-            try
-            {
-                template = File.ReadAllText(path);
-            }
-            catch
-            {
-                return false;
-            }
-
-
-            Engine.Razor.Compile(template, info.Name, info.ModelType);
-            return true;
+            RazorEngineIsInit = true;
         }
 
     }
