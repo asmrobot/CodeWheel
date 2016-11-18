@@ -64,20 +64,44 @@ namespace CodeWheel.Templates.NetCSharp
                 return false;
             }
 
-            
 
-            
+
+            StringBuilder builder = new StringBuilder();
+            builder.AppendLine("namespace "+entity.ProtocolModel.package);
+            builder.AppendLine("{");
+            builder.AppendLine("public enum CommandEnum : byte");
+            builder.AppendLine("{");
+           
             
             for (int i = 0; i < entity.ProtocolModel.commands.Count; i++)
             {
                 entity.CurrentCommand = entity.ProtocolModel.commands[i];
-                string file = Path.Combine(entity.SavePath, "Net_"+entity.CurrentCommand.name + ".cs");
-                
+                builder.Append(entity.CurrentCommand.name+"="+entity.CurrentCommand.command.ToString());
+
+                if (i < entity.ProtocolModel.commands.Count - 1)
+                {
+                    builder.Append(",");
+                }
+                builder.Append("//"+entity.CurrentCommand.descript+"\r\n");
+
+                string file = Path.Combine(entity.SavePath, entity.CurrentCommand.name + ".cs");                
                 if (!method(file, KEY, typeof(DataEntity), entity))
                 {
                     continue;
                 }
             }
+            builder.AppendLine("}");
+            builder.AppendLine("}");
+
+            string commandenumPath = Path.Combine(entity.SavePath, "CommandEnum.cs");
+            File.WriteAllText(commandenumPath, builder.ToString(), System.Text.Encoding.UTF8);
+
+
+
+            //{
+            //    sendmessage = 1,
+            //    sendwx = 2,
+            //}
 
             return true;
         }
