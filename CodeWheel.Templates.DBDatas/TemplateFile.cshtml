@@ -5,25 +5,6 @@ namespace @Model.NameSpace
 {
     public partial class @(Model.CurrentTable.TableName + Model.ClassFix)
     {
-
-        /// <summary>
-        /// 增加
-        /// </summary>
-        public static bool Create(@(Model.ClassPre + Model.CurrentTable.TableName) @(Model.CurrentTable.TableName.ToLower()))
-        {
-            string sql="Insert into `@(Model.CurrentTable.TableName)` (@Model.InsertParameterList(false)) values (@Model.InsertArgumentList(false))";
-            DbParameter[] parameters = new DbParameter[] { 
-                @(Model.CreateDbParameterList(Model.DBHelper, Model.CurrentTable.TableName, false))
-            };
-
-            if (@(Model.DBHelper).ExecuteNonQuery(sql, CommandType.Text, parameters) > 0)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        
         /// <summary>
         /// 增加
         /// </summary>
@@ -44,11 +25,63 @@ namespace @Model.NameSpace
         /// <summary>
         /// 增加
         /// </summary>
+        public static bool Create(@(Model.ClassPre + Model.CurrentTable.TableName) @(Model.CurrentTable.TableName.ToLower()))
+        {
+            string sql="Insert into `@(Model.CurrentTable.TableName)` (@Model.InsertParameterList(false)) values (@Model.InsertArgumentList(false))";
+            DbParameter[] parameters = new DbParameter[] { 
+                @(Model.CreateDbParameterList(Model.DBHelper, Model.CurrentTable.TableName, false))
+            };
+
+            if (@(Model.DBHelper).ExecuteNonQuery(sql, CommandType.Text, parameters) > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 增加
+        /// </summary>
         public static bool Create(@Model.MethodParameterList(false))
         {
             string sql="Insert into `@(Model.CurrentTable.TableName)` (@Model.InsertParameterList(false)) values (@Model.InsertArgumentList(false))";
             DbParameter[] parameters = new DbParameter[] { 
                     @(Model.CreateDbParameterList(Model.DBHelper, "", false))
+            };
+
+            if (@(Model.DBHelper).ExecuteNonQuery(sql, CommandType.Text, parameters) > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+        /// <summary>
+        /// 增加
+        /// </summary>
+        public static bool CreateContainID(@(Model.ClassPre + Model.CurrentTable.TableName) @(Model.CurrentTable.TableName.ToLower()))
+        {
+            string sql="Insert into `@(Model.CurrentTable.TableName)` (@Model.InsertParameterList(true)) values (@Model.InsertArgumentList(true))";
+            DbParameter[] parameters = new DbParameter[] { 
+                @(Model.CreateDbParameterList(Model.DBHelper, Model.CurrentTable.TableName, true))
+            };
+
+            if (@(Model.DBHelper).ExecuteNonQuery(sql, CommandType.Text, parameters) > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 增加
+        /// </summary>
+        public static bool CreateContainID(@Model.MethodParameterList(true))
+        {
+            string sql="Insert into `@(Model.CurrentTable.TableName)` (@Model.InsertParameterList(true)) values (@Model.InsertArgumentList(true))";
+            DbParameter[] parameters = new DbParameter[] { 
+                    @(Model.CreateDbParameterList(Model.DBHelper, "", true))
             };
 
             if (@(Model.DBHelper).ExecuteNonQuery(sql, CommandType.Text, parameters) > 0)
