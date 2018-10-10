@@ -135,7 +135,7 @@ namespace CodeWheel.Model.DB
                 collection = collection.GetNoKeyCollection();
             }
 
-            return collection.Concat((col) => { return col.ColumnName + "=@" + col.ColumnName; }, ",");
+            return collection.Concat((col) => { return "`"+col.ColumnName + "`=@" + col.ColumnName; }, ",");
         }
 
         

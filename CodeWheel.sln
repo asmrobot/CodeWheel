@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeWheel", "CodeWheel\CodeWheel.csproj", "{9B8C29A6-A3A5-4BEF-A7AE-C92EEF8D6D33}"
 EndProject
@@ -10,12 +10,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeWheel.Templates.DBModel", "CodeWheel.Templates.DBModel\CodeWheel.Templates.DBModel.csproj", "{B6BC97DC-39B6-441E-98CF-22652B9DC51E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeWheel.Templates.DBDatas", "CodeWheel.Templates.DBDatas\CodeWheel.Templates.DBDatas.csproj", "{6DC28588-D48E-441B-B0DE-405BA903ECEB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeWheel.Templates.NetCSharp", "CodeWheel.Templates.NetCSharp\CodeWheel.Templates.NetCSharp.csproj", "{D84E6D79-ED2E-4D2B-B870-822B94E16C30}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeWheel.Templates.NetJava", "CodeWheel.Templates.NetJava\CodeWheel.Templates.NetJava.csproj", "{791C3006-1721-4637-9AEE-4636F8E8B287}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeWheel.Templates.NetC", "CodeWheel.Templates.NetC\CodeWheel.Templates.NetC.csproj", "{93D49549-8ED3-45A1-AE2F-486AA92B4EAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,18 +29,6 @@ Global
 		{6DC28588-D48E-441B-B0DE-405BA903ECEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DC28588-D48E-441B-B0DE-405BA903ECEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DC28588-D48E-441B-B0DE-405BA903ECEB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D84E6D79-ED2E-4D2B-B870-822B94E16C30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D84E6D79-ED2E-4D2B-B870-822B94E16C30}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D84E6D79-ED2E-4D2B-B870-822B94E16C30}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D84E6D79-ED2E-4D2B-B870-822B94E16C30}.Release|Any CPU.Build.0 = Release|Any CPU
-		{791C3006-1721-4637-9AEE-4636F8E8B287}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{791C3006-1721-4637-9AEE-4636F8E8B287}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{791C3006-1721-4637-9AEE-4636F8E8B287}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{791C3006-1721-4637-9AEE-4636F8E8B287}.Release|Any CPU.Build.0 = Release|Any CPU
-		{93D49549-8ED3-45A1-AE2F-486AA92B4EAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{93D49549-8ED3-45A1-AE2F-486AA92B4EAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{93D49549-8ED3-45A1-AE2F-486AA92B4EAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{93D49549-8ED3-45A1-AE2F-486AA92B4EAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,8 +36,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B6BC97DC-39B6-441E-98CF-22652B9DC51E} = {59D797DE-1389-437C-920B-D48A0D267CB6}
 		{6DC28588-D48E-441B-B0DE-405BA903ECEB} = {59D797DE-1389-437C-920B-D48A0D267CB6}
-		{D84E6D79-ED2E-4D2B-B870-822B94E16C30} = {59D797DE-1389-437C-920B-D48A0D267CB6}
-		{791C3006-1721-4637-9AEE-4636F8E8B287} = {59D797DE-1389-437C-920B-D48A0D267CB6}
-		{93D49549-8ED3-45A1-AE2F-486AA92B4EAA} = {59D797DE-1389-437C-920B-D48A0D267CB6}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {667803A2-D710-4D8B-89C1-777B08B15F2A}
 	EndGlobalSection
 EndGlobal
