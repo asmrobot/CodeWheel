@@ -7,8 +7,14 @@ namespace @Model.NameSpace
     {
         @foreach (var col in Model.CurrentTable.Columns)
         {
-            
-            @:public @(col.FieldTypeName) @(col.ColumnName){get;set;}
+            <text>
+            public @(col.FieldTypeName) @(col.ColumnName)
+            {
+                get;
+                set;
+            }
+            </text>
+
         }
 
     } 
