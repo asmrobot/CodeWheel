@@ -13,7 +13,7 @@ namespace CodeWheel.Templates.DBDatas
         /// <summary>
         /// 保存路径
         /// </summary>
-        [VarInfoAttribute("保存路径", "D:\\Codegen", VarType.V_Path)]
+        [VarInfoAttribute("保存路径", "D:\\workspace\\codegen", VarType.V_Path)]
         public string SavePath { get; set; }
 
         /// <summary>
