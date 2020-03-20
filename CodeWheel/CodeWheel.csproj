@@ -121,6 +121,7 @@
     <Compile Include="Model\VarInfoAttribute.cs" />
     <Compile Include="Model\VarType.cs" />
     <Compile Include="Utils\RazorProvider.cs" />
+    <Compile Include="Utils\StringUtils.cs" />
     <Compile Include="ViewModels\DBSelectDialogViewModel.cs" />
     <Compile Include="ViewModels\DelegateCommand.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />

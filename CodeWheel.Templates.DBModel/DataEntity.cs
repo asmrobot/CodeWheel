@@ -18,7 +18,7 @@ namespace CodeWheel.Templates.DBModel
         /// <summary>
         /// 命名空间
         /// </summary>
-        [VarInfoAttribute("命名空间", "Surezen.Inone.Domain.Tables", VarType.V_String)]
+        [VarInfoAttribute("命名空间", "Namespace.Tables", VarType.V_String)]
         public string NameSpace { get; set; }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace CodeWheel.Templates.DBModel
         /// <summary>
         /// 类前缀
         /// </summary>
-        [VarInfoAttribute("类型前缀", "T_", VarType.V_String)]
+        [VarInfoAttribute("类型前缀", "T", VarType.V_String)]
         public string ClassPre { get; set; }
     }
 }

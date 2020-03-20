@@ -35,7 +35,7 @@ namespace CodeWheel.Templates.DBDatas
             for (int i = 0; i < entity.Database.Tables.Count; i++)
             {
                 entity.CurrentTable = entity.Database.Tables[i];
-                string file = Path.Combine(entity.SavePath, entity.CurrentTable.TableName+entity.ClassFix + ".cs");
+                string file = Path.Combine(entity.SavePath, entity.CurrentTable.UpperCamelName+entity.ClassFix + ".cs");
                 
                 if (!method(file, KEY, typeof(DataEntity), entity))
                 {

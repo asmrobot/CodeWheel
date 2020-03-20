@@ -147,7 +147,7 @@ namespace CodeWheel.Model.DB
         /// <param name="columns"></param>
         /// <param name="hasPrimaryKey"></param>
         /// <returns></returns>
-        public string CreateDbParameterList(string DbHelperInstanceName, string tableName, bool hasKey)
+        public string CreateDbParameterList(string DbHelperInstanceName, string varName, bool hasKey)
         {
             ColumnMetaCollection collection = this.CurrentTable.Columns;
             if (!hasKey)
@@ -156,19 +156,19 @@ namespace CodeWheel.Model.DB
             }
 
 
-            return collection.Concat((col) => { return CreateDbParameter(DbHelperInstanceName, tableName, col); }, ",\r\n\t\t\t\t");
+            return collection.Concat((col) => { return CreateDbParameter(DbHelperInstanceName, varName, col); }, ",\r\n\t\t\t\t");
         }
 
         /// <summary>
         /// 创建DBparameter
         /// </summary>
         /// <param name="DbHelperInstanceName"></param>
-        /// <param name="tableName"></param>
+        /// <param name="varName"></param>
         /// <param name="col"></param>
         /// <returns></returns>
-        public string CreateDbParameter(string DbHelperInstanceName, string tableName, ColumnMeta col)
+        public string CreateDbParameter(string DbHelperInstanceName, string varName, ColumnMeta col)
         {
-            return DbHelperInstanceName + ".MakeInParam(\"@" + col.ColumnName + "\"," + "DbType." + col.FieldTypeName + "," + col.ColumnSize + "," + (string.IsNullOrEmpty(tableName) ? col.ColumnName.ToLower() : tableName.ToLower() + "." + col.ColumnName) + ")"; ;
+            return DbHelperInstanceName + ".MakeInParam(\"@" + col.ColumnName + "\"," + "DbType." + col.FieldTypeName + "," + col.ColumnSize + "," + (string.IsNullOrEmpty(varName) ? col.LowerCamelColumnName : varName + "." + col.UpperCamelColumnName) + ")"; ;
         }
 
         /// <summary>

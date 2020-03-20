@@ -19,7 +19,7 @@ namespace CodeWheel.Templates.DBDatas
         /// <summary>
         /// 命名空间
         /// </summary>
-        [VarInfoAttribute("命名空间", "Surezen.Clinic.Datas.DB", VarType.V_String)]
+        [VarInfoAttribute("命名空间", "Namespace.Datas", VarType.V_String)]
         public string NameSpace { get; set; }
 
 
@@ -27,7 +27,7 @@ namespace CodeWheel.Templates.DBDatas
         /// <summary>
         /// 引用空间
         /// </summary>
-        [VarInfoAttribute("导入命名空间", "using System;\r\nusing Surezen.Clinic.Domain.Tables;\r\nusing System.Data;\r\nusing System.Data.Common;\r\nusing System.Collections.Generic;", VarType.V_String)]
+        [VarInfoAttribute("导入命名空间", "using Namespace.Tables;\r\n", VarType.V_String)]
         public string ImportNameSpace { get; set; }
 
         [VarInfoAttribute("数据库", "", VarType.V_DB)]
@@ -37,7 +37,7 @@ namespace CodeWheel.Templates.DBDatas
         /// <summary>
         /// 实体类前缀
         /// </summary>
-        [VarInfoAttribute("实体前缀", "T_", VarType.V_String)]
+        [VarInfoAttribute("实体前缀", "T", VarType.V_String)]
         public string ClassPre { get; set; }
 
 

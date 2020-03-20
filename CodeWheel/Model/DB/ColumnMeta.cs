@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CodeWheel.Utils;
 
 namespace CodeWheel.Model.DB
 {
@@ -10,14 +11,35 @@ namespace CodeWheel.Model.DB
     /// </summary>
     public class ColumnMeta
     {
-        /// <summary>
-        /// 字段名
-        /// </summary>
+        private string columnName;
+
         public string ColumnName
         {
-            get;
-            set;
+            get
+            {
+                return this.columnName;
+            }
+            set
+            {
+                if (!value.Equals(this.columnName))
+                {
+                    this.columnName = value;
+                    this.UpperCamelColumnName = StringUtils.ToUpperCamel(value);
+                    this.LowerCamelColumnName = StringUtils.ToLowerCamel(value);
+                }
+            }
         }
+
+        /// <summary>
+        /// 首字母小写的驼峰列名
+        /// </summary>
+        public string LowerCamelColumnName { get; set; }
+
+        /// <summary>
+        /// 驼峰列名
+        /// </summary>
+        public string UpperCamelColumnName { get; set; }
+
 
         /// <summary>
         /// 列序号
