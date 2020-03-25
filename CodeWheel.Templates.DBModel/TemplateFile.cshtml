@@ -8,6 +8,9 @@ namespace @Model.NameSpace
         @foreach (var col in Model.CurrentTable.Columns)
         {
             <text>
+            /// <summary>
+            /// @(col.Comment)
+            /// </summary>
             public @(col.FieldTypeName) @(col.UpperCamelColumnName)
             {
                 get;

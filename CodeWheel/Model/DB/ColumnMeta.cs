@@ -106,6 +106,16 @@ namespace CodeWheel.Model.DB
             set;
         }
 
+
+        /// <summary>
+        /// 注释
+        /// </summary>
+        public string Comment
+        {
+            get;
+            set;
+        }
+
         
 
         
