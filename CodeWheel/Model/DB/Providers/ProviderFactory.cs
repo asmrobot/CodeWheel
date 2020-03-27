@@ -7,16 +7,16 @@ namespace CodeWheel.Model.DB.Providers
 {
     public class ProviderFactory
     {
-        public static IDBProvider CreateInstance(DBType dbt,string connectionString,string dbname)
+        public static IDBProvider CreateInstance(DBType dbt,string connectionString)
         {
             switch (dbt)
             {
                 case DBType.Mysql:
-                    return new MySqlProvider(connectionString,dbname);
+                    return new MySqlProvider(connectionString);
                 case DBType.Sqlserver:
-                    return new SqlServerProvider(connectionString,dbname);
+                    return new SqlServerProvider(connectionString);
                 case DBType.Sqlite:
-                    return new SqliteProvider(connectionString,dbname);
+                    return new SqliteProvider(connectionString);
             }
             return null;
         }

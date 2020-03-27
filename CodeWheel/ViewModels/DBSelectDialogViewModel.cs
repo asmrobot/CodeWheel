@@ -11,148 +11,168 @@ namespace CodeWheel.ViewModels
 
         public DBSelectDialogViewModel()
         {
-            this.ConnectionTest = new DelegateCommand(this.ConnectionTestAction);
             this.SelectFile = new DelegateCommand(this.SelectFileAction);
         }
-        private int m_DBTypeSelectIndex = 0;
-        public int DBTypeSelectIndex
+
+
+        /// <summary>
+        /// 数据库类型 ,0:mysql,1:sqlserver,2:sqlite
+        /// </summary>
+        public Int32 DBType
         {
-            get
-            {
-                return m_DBTypeSelectIndex;
-            }
-            set
-            {
-                if (this.m_DBTypeSelectIndex != value)
-                {
-                    this.m_DBTypeSelectIndex = value;
-                    this.RaisePropertyChanged("DBTypeSelectIndex");
-                }
-            }
+            get;
+            set;
         }
 
-
-
-        
-
-
-        private string m_IP = "127.0.0.1";
+        private string ip = "127.0.0.1";
         public string IP {
             get
             {
-                return m_IP;
+                return ip;
             }
             set
             {
-                if (m_IP != value)
+                if (ip != value)
                 {
-                    this.m_IP = value;
+                    this.ip = value;
                     this.RaisePropertyChanged("IP");
+                    this.ConnectionString = GetConnectionString();
                 }
             }
         }
 
-        private string m_Port = "3306";
+        private string port = "3306";
         public string Port
         {
             get
             {
-                return m_Port;
+                return port;
             }
             set
             {
-                if (this.m_Port != value)
+                if (this.port != value)
                 {
-                    this.m_Port = value;
+                    
+                    this.port = value;
                     this.RaisePropertyChanged("Port");
+                    this.ConnectionString = GetConnectionString();
                 }
             }
         }
 
 
-        private string m_UserName = "root";
+        private string userName = "root";
         public string UserName
         {
             get
             {
-                return m_UserName;
+                return userName;
             }
             set
             {
-                if (m_UserName != value)
+                if (userName != value)
                 {
-                    this.m_UserName = value;
+                    
+                    this.userName = value;
                     this.RaisePropertyChanged("UserName");
+                    this.ConnectionString = GetConnectionString();
                 }
             }
         }
 
-        private string m_Password;
+        private string password;
 
         public string Password
         {
             get
             {
-                return m_Password;
+                return password;
             }
             set
             {
-                if (m_Password != value)
+                if (password != value)
                 {
-                    this.m_Password = value;
+                    
+                    this.password = value;
                     this.RaisePropertyChanged("Password");
+                    this.ConnectionString = GetConnectionString();
                 }
             }
         }
 
 
-        private string m_DBName;
+        private string dbName;
         public string DBName
         {
             get
             {
-                return m_DBName;
+                return dbName;
             }
             set
             {
-                if (m_DBName != value)
+                if (dbName != value)
                 {
-                    this.m_DBName = value;
+                    
+                    this.dbName = value;
                     this.RaisePropertyChanged("DBName");
+                    this.ConnectionString = GetConnectionString();
                 }
             }
         }
 
 
-        private Visibility m_MySqlVisibility = Visibility.Visible;
+
+
+        private string connectionString;
+        /// <summary>
+        /// 数据库连接字符串
+        /// </summary>
+        public string ConnectionString
+        {
+            get
+            {
+                return connectionString;
+            }
+            set
+            {
+                if (connectionString != value)
+                {
+                    this.connectionString = value;
+                    this.RaisePropertyChanged("ConnectionString");
+                }
+            }
+        }
+
+
+        private Visibility mySqlVisibility = Visibility.Visible;
         public Visibility MySqlVisibility
         {
             get
             {
-                return m_MySqlVisibility;
+                return mySqlVisibility;
             }
             set
             {
-                if (m_MySqlVisibility != value)
+                if (mySqlVisibility != value)
                 {
-                    this.m_MySqlVisibility = value;
+                    this.mySqlVisibility = value;
                     this.RaisePropertyChanged("MySqlVisibility");
                 }
             }
         }
 
-        private Visibility m_SQLServerVisibility = Visibility.Hidden;
+        private Visibility sqlServerVisibility = Visibility.Hidden;
         public Visibility SQLServerVisibility
         {
             get
             {
-                return m_SQLServerVisibility;
+                return sqlServerVisibility;
             }
             set
             {
-                if (m_SQLServerVisibility != value)
+                if (sqlServerVisibility != value)
                 {
-                    this.m_SQLServerVisibility = value;
+                    this.sqlServerVisibility = value;
                     this.RaisePropertyChanged("SQLServerVisibility");
                 }
             }
@@ -163,50 +183,24 @@ namespace CodeWheel.ViewModels
 
 
 
-        private Visibility m_SQLiteVisibility = Visibility.Hidden;
+        private Visibility sqliteVisibility = Visibility.Hidden;
         public Visibility SQLiteVisibility
         {
             get
             {
-                return m_SQLiteVisibility;
+                return sqliteVisibility;
             }
             set
             {
-                if (m_SQLiteVisibility != value)
+                if (sqliteVisibility != value)
                 {
-                    this.m_SQLiteVisibility = value;
+                    this.sqliteVisibility = value;
                     this.RaisePropertyChanged("SQLiteVisibility");
                 }
             }
         }
 
-
-
-
-
-
-
-
         #region Events
-        /// <summary>
-        /// 测试连接
-        /// </summary>
-        public DelegateCommand ConnectionTest
-        {
-            get;set;
-        }
-
-        private void ConnectionTestAction(object parameter)
-        {
-            if (IsConnectionion())
-            {
-                MessageBox.Show("连接成功");
-            }
-            else
-            {
-                MessageBox.Show("连接失败");
-            }
-        }
 
         /// <summary>
         /// 选择文件
@@ -235,13 +229,13 @@ namespace CodeWheel.ViewModels
         /// 是否能连接
         /// </summary>
         /// <returns></returns>
-        public bool IsConnectionion()
+        public bool TestConnectionion()
         {
             string dbconnection = GetConnectionString();
             System.Data.Common.DbConnection connection=null;
             try
             {
-                switch (this.DBTypeSelectIndex)
+                switch (this.DBType)
                 {
                     case 0:
                         connection = new MySql.Data.MySqlClient.MySqlConnection(dbconnection);
@@ -276,7 +270,7 @@ namespace CodeWheel.ViewModels
         {
             string dbconnection = string.Empty;
 
-            switch (this.DBTypeSelectIndex)
+            switch (this.DBType)
             {
                 case 0:
                     dbconnection = "Server="+IP+";charset=utf8;Database="+DBName+ ";Port="+Port+";Uid=" + UserName+";Pwd="+Password+";default command timeout=10;";

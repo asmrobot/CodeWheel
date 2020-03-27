@@ -5,112 +5,96 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CodeWheel.Dialogs"
         mc:Ignorable="d"
-        Title="数据库选择..." Height="500" Width="500" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
-    <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
-        <Grid>
+        Title="连接" Height="400" Width="320" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--mysql-->
+        <Grid Grid.Row="0" Visibility="{Binding MySqlVisibility}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="6" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />                
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+            <TextBlock Text="主机:"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Margin="0 12 0 12" Grid.Row="0" Grid.Column="2" Text="{Binding IP}" />
 
-            <TextBlock Text="选择数据库"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-            <ComboBox Grid.Row="0" Grid.Column="2" SelectedIndex="{Binding DBTypeSelectIndex}" x:Name="DBSelect" SelectionChanged="DBSelect_SelectionChanged">
-                <ComboBoxItem>MySql</ComboBoxItem>
-                <ComboBoxItem>SqlServer</ComboBoxItem>
-                <ComboBoxItem>SQLite</ComboBoxItem>
-            </ComboBox>
+            <TextBlock Text="端口:"  Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Margin="0 12 0 12" Grid.Row="1" Grid.Column="2" Text="{Binding Port}" />
 
-            <!--mysql-->
-            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Visibility="{Binding MySqlVisibility}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="12" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <TextBlock Text="主机名或IP地址"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-                <TextBox Margin="0 12 0 12" Grid.Row="0" Grid.Column="2" Text="{Binding IP}" />
+            <TextBlock Text="用户名:"  Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Margin="0 12 0 12" Grid.Row="2" Grid.Column="2" Text="{Binding UserName}" />
 
-                <TextBlock Text="端口"  Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
-                <TextBox Margin="0 12 0 12" Grid.Row="1" Grid.Column="2" Text="{Binding Port}" />
+            <TextBlock Text="密码:"  Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Margin="0 12 0 12" Grid.Row="3" Grid.Column="2" Text="{Binding Password}" />
 
-                <TextBlock Text="用户名"  Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
-                <TextBox Margin="0 12 0 12" Grid.Row="2" Grid.Column="2" Text="{Binding UserName}" />
+            <TextBlock Text="数据库名称:"  Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Margin="0 12 0 12" Grid.Row="4" Grid.Column="2" Text="{Binding DBName}" />
 
-                <TextBlock Text="密码"  Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"/>
-                <TextBox Margin="0 12 0 12" Grid.Row="3" Grid.Column="2" Text="{Binding Password}" />
-
-                <TextBlock Text="数据库名称"  Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"/>
-                <TextBox Margin="0 12 0 12" Grid.Row="4" Grid.Column="2" Text="{Binding DBName}" />
-
-            </Grid>
-
-
-
-            <!--sqlserver-->
-            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Visibility="{Binding SQLServerVisibility}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="12" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <TextBlock Text="主机名或IP地址"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-                <TextBox Margin="0 12 0 12" Grid.Row="0" Grid.Column="2" Text="{Binding IP}" />
-
-                <TextBlock Text="用户名"  Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
-                <TextBox Margin="0 12 0 12" Grid.Row="2" Grid.Column="2" Text="{Binding UserName}" />
-
-                <TextBlock Text="密码"  Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"/>
-                <TextBox Margin="0 12 0 12" Grid.Row="3" Grid.Column="2" Text="{Binding Password}" />
-
-                <TextBlock Text="数据库名称"  Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"/>
-                <TextBox Margin="0 12 0 12" Grid.Row="4" Grid.Column="2" Text="{Binding DBName}" />
-
-            </Grid>
-            
-            
-            
-            <!--sqlite-->
-            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Visibility="{Binding SQLiteVisibility}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="12" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <TextBlock Text="数据文件"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-                <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" Content="选择" Command="{Binding SelectFile}"/>
-                <TextBox Grid.Column="3" Margin="12 12 0 12" Text="{Binding DBName}" />
-            </Grid>
-
-            <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="2"  HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                <Button Content="连接测试" Margin="6" Padding="6 0" Command="{Binding ConnectionTest}"/>
-                <Button Content="确定" Margin="6" Height="30" Padding="6 0" x:Name="OKButton" Click="OKButton_Click"/>
-                <Button Content="取消" Margin="6" Height="30" Padding="6 0" x:Name="CancelButton" Click="CancelButton_Click"/>
-            </StackPanel>
         </Grid>
-    </ScrollViewer>
-    
+
+        <!--sqlserver-->
+        <Grid Grid.Row="0" Visibility="{Binding SQLServerVisibility}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="6" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Text="主机:"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Margin="0 12 0 12" Grid.Row="0" Grid.Column="2" Text="{Binding IP}" />
+
+            <TextBlock Text="用户名:"  Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Margin="0 12 0 12" Grid.Row="2" Grid.Column="2" Text="{Binding UserName}" />
+
+            <TextBlock Text="密码:"  Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Margin="0 12 0 12" Grid.Row="3" Grid.Column="2" Text="{Binding Password}" />
+
+            <TextBlock Text="数据库名称:"  Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Margin="0 12 0 12" Grid.Row="4" Grid.Column="2" Text="{Binding DBName}" />
+
+        </Grid>
+
+        <!--sqlite-->
+        <Grid Grid.Row="0" Visibility="{Binding SQLiteVisibility}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="6" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Text="数据文件"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+            <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" Content="选择" Command="{Binding SelectFile}"/>
+            <TextBox Grid.Column="3" Margin="12 12 0 12" Text="{Binding DBName}" />
+        </Grid>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Button Content="连接测试" Margin="6" Padding="6 0" Click="TestConnection_Click"/>
+            <Button Content="确定" Margin="6" Height="30" Padding="6 0" x:Name="OKButton" Click="OKButton_Click"/>
+            <Button Content="取消" Margin="6" Height="30" Padding="6 0" x:Name="CancelButton" Click="CancelButton_Click"/>
+        </StackPanel>
+
+        <TextBox Grid.Row="2" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding ConnectionString}" Padding="4"  />
+    </Grid>
 </Window>

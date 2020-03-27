@@ -18,30 +18,30 @@ namespace CodeWheel.Templates.DBModel
         public bool CreateFiles(out string msg,RunTemplateDelegate method, object parameters)
         {
             msg = string.Empty;
-            DataEntity entity = parameters as DataEntity;
+            UIVO entity = parameters as UIVO;
             
-            if (string.IsNullOrWhiteSpace(entity.SavePath))
-            {
-                msg = "保存路径不能为空";
-                return false;
-            }
+            //if (string.IsNullOrWhiteSpace(entity.SavePath))
+            //{
+            //    msg = "保存路径不能为空";
+            //    return false;
+            //}
             
-            if (entity.Database == null)
-            {
-                msg = "选择的数据库不存在";
-                return false;
-            }
+            //if (entity.Database == null)
+            //{
+            //    msg = "选择的数据库不存在";
+            //    return false;
+            //}
             
-            for (int i = 0; i < entity.Database.Tables.Count; i++)
-            {
-                entity.CurrentTable = entity.Database.Tables[i];
-                string file = Path.Combine(entity.SavePath, entity.ClassPre+entity.CurrentTable.UpperCamelName + ".cs");
+            //for (int i = 0; i < entity.Database.Tables.Count; i++)
+            //{
+            //    entity.CurrentTable = entity.Database.Tables[i];
+            //    string file = Path.Combine(entity.SavePath, entity.ClassPre+entity.CurrentTable.UpperCamelName + ".cs");
                 
-                if (!method(file, KEY, typeof(DataEntity), entity))
-                {
-                    continue;
-                }
-            }
+            //    if (!method(file, KEY, typeof(DataEntity), entity))
+            //    {
+            //        continue;
+            //    }
+            //}
 
             return true;
         }
@@ -55,7 +55,7 @@ namespace CodeWheel.Templates.DBModel
             info.TemplateContent = reader.ReadToEnd();
             stream.Close();
             info.Name = KEY;
-            info.ViewModelType = typeof(DataEntity);
+            info.ViewModelType = typeof(UIVO);
             return info;
         }
     }

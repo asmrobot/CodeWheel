@@ -13,20 +13,25 @@ namespace CodeWheel.Model.DB.Providers
 
         public string ConnectionString { get; set; }
 
-        public string DBName { get; set; }
-        public MySqlProvider(string dbconstr,string dbname)
+        
+        public MySqlProvider(string dbconstr)
         {
             this.ConnectionString = dbconstr;
-            this.DBName = dbname;
         }
 
         public string[] GetTables()
         {
-            string sql = "select table_name from information_schema.tables where table_schema='"+DBName+"'";
+            MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder(ConnectionString);
+            string sql = $"select table_name from information_schema.tables where table_schema='{builder.Database}'";
             List<string> tables = new List<string>();
             MySqlConnection connection = new MySqlConnection(this.ConnectionString);
             connection.Open();
-            MySqlCommand cmd = new MySqlCommand(sql, connection);
+
+
+
+            MySqlCommand cmd = connection.CreateCommand();
+            cmd.CommandText = sql;
+            cmd.CommandType = CommandType.Text;
             using (MySqlDataReader ddr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
             {
                 while (!ddr.IsClosed && ddr.Read())

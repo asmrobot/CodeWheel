@@ -11,12 +11,10 @@ namespace CodeWheel.Model.DB.Providers
     {
         public string ConnectionString { get; set; }
 
-        public string DBName { get; set; }
 
-        public SqlServerProvider(string dbconstr, string dbname)
+        public SqlServerProvider(string dbconstr)
         {
             this.ConnectionString = dbconstr;
-            this.DBName = dbname;
         }
 
         public string[] GetTables()

@@ -17,20 +17,16 @@ namespace CodeWheel.Controls
     /// <summary>
     /// CWTextControl.xaml 的交互逻辑
     /// </summary>
-    public partial class CWDateTimeControl : UserControl,CWControlBase
+    public partial class CWSingleTextControl : UserControl,CWControlBase
     {
 
-        public CWDateTimeControl(object _DefaultVal)
+        public CWSingleTextControl(object _DefaultVal)
         {
             InitializeComponent();
             this.m_DefaultValue = _DefaultVal;
             if (this.m_DefaultValue != null)
             {
-                DateTime dt;
-                if (DateTime.TryParse(this.m_DefaultValue.ToString(), out dt))
-                {
-                    this.rendercontrol.SelectedDate = dt;
-                }
+                this.rendercontrol.Text = this.m_DefaultValue.ToString();
             }
         }
 
@@ -43,7 +39,7 @@ namespace CodeWheel.Controls
 
         public object GetValue()
         {
-            return this.rendercontrol.SelectedDate;
+            return this.rendercontrol.Text;
         }
     }
 }

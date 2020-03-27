@@ -10,13 +10,8 @@ namespace CodeWheel.Model
     /// </summary>
     public enum VarType
     {
-        V_Int,//int,
-        V_String,//string,
-        V_Boolean,//boolean,复选框
-        V_DateTime,//datetime,选择日期
-        V_DB,//db,选择数据库
-        V_Path,//path,选择路径
-        V_File,//file,选择文件
+        SingleString,//单行文本
+        MultiString//多行文本
     }
 
 }

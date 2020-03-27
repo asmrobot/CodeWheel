@@ -26,24 +26,29 @@ namespace CodeWheel.Dialogs
             get;set;
         }
 
-        public DBSelectDialog()
+
+        
+
+        public DBSelectDialog(Int32 dbTypeSelectIndex)
         {
             
             InitializeComponent();
             this.ViewModel = new DBSelectDialogViewModel();
             this.DataContext = this.ViewModel;
+            this.ViewModel.DBType = dbTypeSelectIndex;
+            SetDBTypeVisibility(this.ViewModel.DBType);
         }
 
-        private void DBSelect_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        /// <summary>
+        /// 设置某种数据库可见性
+        /// </summary>
+        /// <param name="dbType"></param>
+        private void SetDBTypeVisibility(Int32 dbType)
         {
-            if (this.ViewModel == null)
-            {
-                return;
-            }
             this.ViewModel.MySqlVisibility = Visibility.Hidden;
             this.ViewModel.SQLServerVisibility = Visibility.Hidden;
             this.ViewModel.SQLiteVisibility = Visibility.Hidden;
-            switch (this.ViewModel.DBTypeSelectIndex)
+            switch (dbType)
             {
                 case 0:
                     this.ViewModel.MySqlVisibility = Visibility.Visible;
@@ -57,46 +62,65 @@ namespace CodeWheel.Dialogs
             }
         }
 
+        /// <summary>
+        /// 取消
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = false;
         }
 
+        /// <summary>
+        /// 确定
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!this.ViewModel.IsConnectionion())
+            if (!this.ViewModel.TestConnectionion())
             {
-                MessageBox.Show("选择的数据库连接不上，请重新填写");
+                MessageBox.Show("选择的数据库连接不上");
+                this.DialogResult = false;
                 return;
             }
-            string connectionStr = this.ViewModel.GetConnectionString();
-            string dbname = this.ViewModel.DBName;
-            switch (this.ViewModel.DBTypeSelectIndex)
+            else
             {
-                case 0:
-                    this.m_Database = DatabaseMeta.CreateByMysql(connectionStr, dbname);
-                    break;
-                case 1:
-                    this.m_Database = DatabaseMeta.CreateBySqlserver(connectionStr, dbname);
-                    break;
-                case 2:
-                    this.m_Database = DatabaseMeta.CreateBySqlite(connectionStr, dbname);
-                    break;
+                this.DialogResult = true;
             }
             
-            this.DialogResult = true;
+            
         }
 
 
-        private DatabaseMeta m_Database;
         /// <summary>
-        /// 数据库
+        /// 测试连接
         /// </summary>
-        public DatabaseMeta Database
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TestConnection_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.ViewModel.TestConnectionion())
+            {
+                MessageBox.Show("连接成功");
+            }
+            else
+            {
+                MessageBox.Show("连接失败");
+            }
+
+        }
+
+
+        /// <summary>
+        /// 连接字符串
+        /// </summary>
+        public string ConnectionString
         {
             get
             {
-                return m_Database;
+                return this.ViewModel.GetConnectionString();
             }
         }
     }

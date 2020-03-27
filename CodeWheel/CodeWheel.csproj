@@ -78,27 +78,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Controls\CWDBControl.xaml.cs">
-      <DependentUpon>CWDBControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\CWPathControl.xaml.cs">
       <DependentUpon>CWPathControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CWFileControl.xaml.cs">
       <DependentUpon>CWFileControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CWDateTimeControl.xaml.cs">
-      <DependentUpon>CWDateTimeControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\CWControlBase.cs" />
-    <Compile Include="Controls\CWBooleanControl.xaml.cs">
-      <DependentUpon>CWBooleanControl.xaml</DependentUpon>
+    <Compile Include="Controls\CWMutilTextControl.xaml.cs">
+      <DependentUpon>CWMutilTextControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CWIntControl.xaml.cs">
-      <DependentUpon>CWIntControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\CWTextControl.xaml.cs">
-      <DependentUpon>CWTextControl.xaml</DependentUpon>
+    <Compile Include="Controls\CWSingleTextControl.xaml.cs">
+      <DependentUpon>CWSingleTextControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\DBSelectDialog.xaml.cs">
       <DependentUpon>DBSelectDialog.xaml</DependentUpon>
@@ -107,7 +98,7 @@
     <Compile Include="Model\DB\ColumnMeta.cs" />
     <Compile Include="Model\DB\ColumnMetaCollection.cs" />
     <Compile Include="Model\DB\DatabaseMeta.cs" />
-    <Compile Include="Model\DB\DataViewModelBase.cs" />
+    <Compile Include="Model\UIVOBase.cs" />
     <Compile Include="Model\DB\Providers\IDBProvider.cs" />
     <Compile Include="Model\DB\Providers\MySqlProvider.cs" />
     <Compile Include="Model\DB\Providers\ProviderFactory.cs" />
@@ -126,10 +117,6 @@
     <Compile Include="ViewModels\DelegateCommand.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\NotificationObject.cs" />
-    <Page Include="Controls\CWDBControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Controls\CWPathControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -138,21 +125,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\CWDateTimeControl.xaml">
+    <Page Include="Controls\CWMutilTextControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\CWBooleanControl.xaml">
+    <Page Include="Controls\CWSingleTextControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\CWIntControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\CWTextControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\DBSelectDialog.xaml">
       <SubType>Designer</SubType>
@@ -199,9 +178,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Asserts\logo.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Asserts\wheel.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.102.0\build\net40\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.102.0\build\net40\System.Data.SQLite.Core.targets')" />

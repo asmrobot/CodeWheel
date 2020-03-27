@@ -6,7 +6,10 @@ using System.Text;
 
 namespace CodeWheel.Model.DB
 {
-    public class DataViewModelBase
+    /// <summary>
+    /// 界面view object基类
+    /// </summary>
+    public class UIVOBase
     {
 
         /// <summary>
@@ -14,7 +17,6 @@ namespace CodeWheel.Model.DB
         /// </summary>
         public TableMeta CurrentTable { get; set; }
 
-        
 
         /// <summary>
         /// 得到所有非主键列

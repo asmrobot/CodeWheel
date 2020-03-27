@@ -1,5 +1,7 @@
 ﻿using CodeWheel.Controls;
+using CodeWheel.Dialogs;
 using CodeWheel.Model;
+using CodeWheel.Model.DB;
 using CodeWheel.Utils;
 using CodeWheel.ViewModels;
 using System;
@@ -53,26 +55,11 @@ namespace CodeWheel
             UserControl control = null;
             switch (info.VarType)
             {
-                case VarType.V_Boolean:
-                    control = new CWBooleanControl(info.VarDefault);
+                case VarType.SingleString:
+                    control = new CWSingleTextControl(info.VarDefault);
                     break;
-                case VarType.V_DateTime:
-                    control = new CWDateTimeControl(info.VarDefault);
-                    break;
-                case VarType.V_DB:
-                    control = new CWDBControl(info.VarDefault);
-                    break;
-                case VarType.V_File:
-                    control = new CWFileControl(info.VarDefault);
-                    break;
-                case VarType.V_Int:
-                    control = new CWIntControl(info.VarDefault);
-                    break;
-                case VarType.V_Path:
-                    control = new CWPathControl(info.VarDefault);
-                    break;
-                case VarType.V_String:
-                    control = new CWTextControl(info.VarDefault);
+                case VarType.MultiString:
+                    control = new CWMutilTextControl(info.VarDefault);
                     break;
             }
 
@@ -80,6 +67,25 @@ namespace CodeWheel
             this.RegisterName(control.Name, control);
             return control;
         }
+
+        /// <summary>
+        /// 清空元素
+        /// </summary>
+        private void ClearElement()
+        {
+            //清空原模板变量
+            foreach (var item in this._VarPanel.Children)
+            {
+                UserControl uc = item as UserControl;
+                if (uc != null && !string.IsNullOrEmpty(uc.Name))
+                {
+                    this.UnregisterName(uc.Name);
+                }
+            }
+            this._VarPanel.Children.Clear();
+            this._VarPanel.RowDefinitions.Clear();
+        }
+            
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -91,20 +97,7 @@ namespace CodeWheel
                 {
                     return;
                 }
-
-                //清空原模板变量
-                foreach (var item in this._VarPanel.Children)
-                {
-                    UserControl uc = item as UserControl;
-                    if (uc != null && !string.IsNullOrEmpty(uc.Name))
-                    {
-                        this.UnregisterName(uc.Name);
-                    }
-                }
-                this._VarPanel.Children.Clear();
-                
-
-                this._VarPanel.RowDefinitions.Clear();
+                ClearElement();
 
                 //添加新模板变量
                 for (int i = 0; i < info.Vars.Count; i++)
@@ -117,15 +110,12 @@ namespace CodeWheel
                     title.Text = info.Vars[i].VarTitle;
                     Grid.SetColumn(title, 0);
                     Grid.SetRow(title, i);
-                    title.VerticalAlignment = VerticalAlignment.Center;
-                    
+                    title.VerticalAlignment = VerticalAlignment.Center;     
                     this._VarPanel.Children.Add(title);
 
                     UserControl element = CreateElement(info.Vars[i]);
                     Grid.SetColumn(element, 2);
-                    Grid.SetRow(element, i);
-                    
-                    
+                    Grid.SetRow(element, i);  
                     this._VarPanel.Children.Add(element);
                 }                
             }
@@ -141,7 +131,6 @@ namespace CodeWheel
                 {
                     return;
                 }
-
 
                 object viewmodel=System.Activator.CreateInstance(info.ViewModelType);
                 //向页面传值
@@ -176,6 +165,68 @@ namespace CodeWheel
                 {
                     MessageBox.Show(msg);
                 }
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+            this.ViewModel.AddTalbe(DateTime.Now.ToString());
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show($"已选中表个数:{this.ViewModel.GetSelectedTables().Count.ToString()}");
+        }
+
+        /// <summary>
+        /// 选择数据库连接字符串
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ChoiceDB_Click(object sender, RoutedEventArgs e)
+        {
+            //打开对话框
+            DBSelectDialog dialog = new DBSelectDialog(this.ViewModel.DBTypeSelectIndex);
+
+            bool? result = dialog.ShowDialog();
+            if (result != null && result.Value == true)
+            {
+                this.ViewModel.ConnectionString = dialog.ConnectionString;
+
+            }
+        }
+
+        /// <summary>
+        /// 连接字符串 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ConnectDB_Click(object sender, RoutedEventArgs e)
+        {
+            if (!this.ViewModel.TestConnectionion())
+            {
+                MessageBox.Show("选择的数据库连接不上，请重新填写");
+                return;
+            }
+
+            DatabaseMeta dbMeta = null;
+            switch (this.ViewModel.DBTypeSelectIndex)
+            {
+                case 0:
+                    dbMeta = DatabaseMeta.CreateByMysql(this.ViewModel.ConnectionString);
+                    break;
+                case 1:
+                    dbMeta = DatabaseMeta.CreateBySqlserver(this.ViewModel.ConnectionString);
+                    break;
+                case 2:
+                    dbMeta = DatabaseMeta.CreateBySqlite(this.ViewModel.ConnectionString);
+                    break;
+            }
+
+            foreach (var item in dbMeta.Tables)
+            {
+                this.ViewModel.Tables.Add(new TableSelectModel() { IsSelected = true, TableName = item.TableName,Meta=item });
             }
         }
     }

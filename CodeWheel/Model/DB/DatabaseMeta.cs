@@ -34,10 +34,6 @@ namespace CodeWheel.Model.DB
         /// </summary>
         public string ConnectionString { get; set; }
 
-        /// <summary>
-        /// 数据库名称
-        /// </summary>
-        public string DBName { get; set; }
 
 
         /// <summary>
@@ -54,9 +50,9 @@ namespace CodeWheel.Model.DB
         /// </summary>
         /// <param name="connectionstr"></param>
         /// <returns></returns>
-        public static DatabaseMeta CreateByMysql(string connectionstr,string dbname)
+        public static DatabaseMeta CreateByMysql(string connectionstr)
         {
-            return CreateDatabaseMeta(DBType.Mysql, connectionstr, dbname);
+            return CreateDatabaseMeta(DBType.Mysql, connectionstr);
         }
 
         /// <summary>
@@ -64,9 +60,9 @@ namespace CodeWheel.Model.DB
         /// </summary>
         /// <param name="connectionstr"></param>
         /// <returns></returns>
-        public static DatabaseMeta CreateBySqlserver(string connectionstr,string dbname)
+        public static DatabaseMeta CreateBySqlserver(string connectionstr)
         {
-            return CreateDatabaseMeta(DBType.Sqlserver, connectionstr, dbname);
+            return CreateDatabaseMeta(DBType.Sqlserver, connectionstr);
         }
 
         /// <summary>
@@ -74,20 +70,20 @@ namespace CodeWheel.Model.DB
         /// </summary>
         /// <param name="connectionstr"></param>
         /// <returns></returns>
-        public static DatabaseMeta CreateBySqlite(string connectionstr,string dbname)
+        public static DatabaseMeta CreateBySqlite(string connectionstr)
         {
-            return CreateDatabaseMeta(DBType.Sqlite, connectionstr, dbname);
+            return CreateDatabaseMeta(DBType.Sqlite, connectionstr);
         }
 
-        private static DatabaseMeta CreateDatabaseMeta(DBType dbt, string connectionstring, string dbname)
+        private static DatabaseMeta CreateDatabaseMeta(DBType dbt, string connectionstring)
         {
             DatabaseMeta dbm = new DatabaseMeta();
             dbm.ConnectionString = connectionstring;
-            dbm.DBName = dbname;
+            
             dbm.DBType = dbt;
             dbm.Tables = new List<TableMeta>();
 
-            IDBProvider provider = ProviderFactory.CreateInstance(dbm.DBType,connectionstring,dbname);
+            IDBProvider provider = ProviderFactory.CreateInstance(dbm.DBType,connectionstring);
 
             string[] tables = provider.GetTables();
             for (int i = 0; i < tables.Length; i++)

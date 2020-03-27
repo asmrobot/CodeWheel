@@ -43,7 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RealTemplate.cs" />
-    <Compile Include="DataEntity.cs" />
+    <Compile Include="UIVO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

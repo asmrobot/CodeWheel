@@ -5,39 +5,111 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CodeWheel"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="代码轮子" Height="500" Width="800">
-    <Grid>
-        
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="30" />
-            <ColumnDefinition Width="3*" />
-        </Grid.ColumnDefinitions>
-        <DockPanel Grid.Column="0" LastChildFill="True" >
-            <TextBlock Text="模板列表" DockPanel.Dock="Top" />
-            <ListBox DockPanel.Dock="Bottom" ItemsSource="{Binding TemplateList}" SelectedIndex="{Binding TemplateSelectIndex}" SelectionChanged="ListBox_SelectionChanged">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Name}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </DockPanel>
-        <GridSplitter Grid.Column="1"/>
-        <DockPanel Grid.Column="2" LastChildFill="True">
-            <Button Content="生成" x:Name="GenericeCodeButton" Click="GenericeCodeButton_Click" DockPanel.Dock="Bottom" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 30 0" />
-            <ScrollViewer DockPanel.Dock="Top" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible" >
-                <Grid x:Name="_VarPanel">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="12" />
-                        <ColumnDefinition Width="3*" />
-                    </Grid.ColumnDefinitions>
+    <Grid Background="#e2e2e2">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Button Margin="5" Click="Button_Click_1">设置目录</Button>
+            <Button Margin="5" Click="Button_Click">打开目录</Button>
+        </StackPanel>
 
+        <GroupBox Grid.Row="1" Padding="8" Margin="4">
+            <GroupBox.Header>
+                <TextBlock Text="数据库" />
+            </GroupBox.Header>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <ComboBox Width="80" SelectedIndex="{Binding DBTypeSelectIndex}" Grid.Column="0">
+                        <ComboBoxItem>MySql</ComboBoxItem>
+                        <!--<ComboBoxItem>Sqlite</ComboBoxItem>-->
+                    </ComboBox>
+
+                    <TextBox Grid.Column="1" Margin="4 0 0 0" Text="{Binding ConnectionString}"/>
+
+                    <Button Content="..." Grid.Column="2" Margin="0 0 4 0" Padding="8 0" Click="ChoiceDB_Click" />
+
+                    <Button Content="连接" Grid.Column="3" Margin="4 0"  Click="ConnectDB_Click"/>
                 </Grid>
-            </ScrollViewer>
-            
-        </DockPanel>
+
+                <ListView Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding Tables}" Height="120" Margin="0 4 0 0">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox IsChecked="{Binding IsSelected}" />
+                                <TextBlock Text="{Binding TableName}" Width="120" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+            </Grid>
+        </GroupBox>
+
+
+        <GroupBox Grid.Row="2" Padding="8" Margin="4">
+            <GroupBox.Header>
+                <TextBlock Text="模板" />
+            </GroupBox.Header>
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <ListBox Grid.Column="0"  DockPanel.Dock="Bottom" ItemsSource="{Binding TemplateList}" SelectedIndex="{Binding TemplateSelectIndex}" SelectionChanged="ListBox_SelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <Border Grid.Column="1" BorderBrush="#abadb3" BorderThickness="0 1 1 1">
+                    <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" >
+                        <Grid x:Name="_VarPanel">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="12" />
+                                <ColumnDefinition Width="3*" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ScrollViewer>
+                </Border>
+                
+
+                <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 4 0 0">
+                    <Button Content="文档生成"    VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 0 24 0" />
+
+                    <Button Content="代码生成" x:Name="GenericeCodeButton" Click="GenericeCodeButton_Click"  Margin="0 0 24 0" />
+                </StackPanel>
+                
+            </Grid>
+        </GroupBox>
         
     </Grid>
+
 </Window>

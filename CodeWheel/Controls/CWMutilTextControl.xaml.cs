@@ -17,16 +17,16 @@ namespace CodeWheel.Controls
     /// <summary>
     /// CWTextControl.xaml 的交互逻辑
     /// </summary>
-    public partial class CWBooleanControl : UserControl,CWControlBase
+    public partial class CWMutilTextControl : UserControl,CWControlBase
     {
 
-        public CWBooleanControl(object _DefaultVal)
+        public CWMutilTextControl(object _DefaultVal)
         {
             InitializeComponent();
             this.m_DefaultValue = _DefaultVal;
-            if (this.m_DefaultValue != null&& this.m_DefaultValue.ToString().ToUpper()=="TRUE")
+            if (this.m_DefaultValue != null)
             {
-                this.rendercontrol.IsChecked = true;
+                this.rendercontrol.Text = this.m_DefaultValue.ToString();
             }
         }
 
@@ -39,11 +39,7 @@ namespace CodeWheel.Controls
 
         public object GetValue()
         {
-            if (this.rendercontrol.IsChecked.HasValue && this.rendercontrol.IsChecked.Value)
-            {
-                return true;
-            }
-            return false;
+            return this.rendercontrol.Text;
         }
     }
 }
