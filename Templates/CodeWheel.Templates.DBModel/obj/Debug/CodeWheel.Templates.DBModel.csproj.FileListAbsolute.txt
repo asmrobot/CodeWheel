@@ -1,0 +1,10 @@
+D:\WorkSpace\DotNet\CodeWheel\CodeWheel\bin\Templates\DBModel\CodeWheel.Templates.DBModel.dll
+D:\WorkSpace\DotNet\CodeWheel\CodeWheel\bin\Templates\DBModel\CodeWheel.Templates.DBModel.pdb
+D:\WorkSpace\DotNet\CodeWheel\CodeWheel.Templates.DBModel\obj\Debug\CodeWheel.Templates.DBModel.csprojAssemblyReference.cache
+D:\WorkSpace\DotNet\CodeWheel\CodeWheel.Templates.DBModel\obj\Debug\CodeWheel.Templates.DBModel.dll
+D:\WorkSpace\DotNet\CodeWheel\CodeWheel.Templates.DBModel\obj\Debug\CodeWheel.Templates.DBModel.pdb
+D:\workspace\dotnet\CodeWheel\Templates\CodeWheel\bin\Templates\DBModel\CodeWheel.Templates.DBModel.dll
+D:\workspace\dotnet\CodeWheel\Templates\CodeWheel\bin\Templates\DBModel\CodeWheel.Templates.DBModel.pdb
+D:\workspace\dotnet\CodeWheel\Templates\CodeWheel.Templates.DBModel\obj\Debug\CodeWheel.Templates.DBModel.csprojAssemblyReference.cache
+D:\workspace\dotnet\CodeWheel\Templates\CodeWheel.Templates.DBModel\obj\Debug\CodeWheel.Templates.DBModel.dll
+D:\workspace\dotnet\CodeWheel\Templates\CodeWheel.Templates.DBModel\obj\Debug\CodeWheel.Templates.DBModel.pdb

@@ -7,11 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeWheel", "CodeWheel\Code
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{59D797DE-1389-437C-920B-D48A0D267CB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeWheel.Templates.DBModel", "CodeWheel.Templates.DBModel\CodeWheel.Templates.DBModel.csproj", "{B6BC97DC-39B6-441E-98CF-22652B9DC51E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeWheel.Templates.DBDatas", "CodeWheel.Templates.DBDatas\CodeWheel.Templates.DBDatas.csproj", "{6DC28588-D48E-441B-B0DE-405BA903ECEB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeWheel.Infrastructure", "CodeWheel.Infrastructure\CodeWheel.Infrastructure.csproj", "{CAE8BB7C-19FA-4DF9-AA40-6EE4BAB3355C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeWheel.Templates.DBDatas", "Templates\CodeWheel.Templates.DBDatas\CodeWheel.Templates.DBDatas.csproj", "{6DC28588-D48E-441B-B0DE-405BA903ECEB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeWheel.Templates.DBModel", "Templates\CodeWheel.Templates.DBModel\CodeWheel.Templates.DBModel.csproj", "{B6BC97DC-39B6-441E-98CF-22652B9DC51E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,25 +23,25 @@ Global
 		{9B8C29A6-A3A5-4BEF-A7AE-C92EEF8D6D33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B8C29A6-A3A5-4BEF-A7AE-C92EEF8D6D33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B8C29A6-A3A5-4BEF-A7AE-C92EEF8D6D33}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B6BC97DC-39B6-441E-98CF-22652B9DC51E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B6BC97DC-39B6-441E-98CF-22652B9DC51E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B6BC97DC-39B6-441E-98CF-22652B9DC51E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B6BC97DC-39B6-441E-98CF-22652B9DC51E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6DC28588-D48E-441B-B0DE-405BA903ECEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6DC28588-D48E-441B-B0DE-405BA903ECEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6DC28588-D48E-441B-B0DE-405BA903ECEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6DC28588-D48E-441B-B0DE-405BA903ECEB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CAE8BB7C-19FA-4DF9-AA40-6EE4BAB3355C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CAE8BB7C-19FA-4DF9-AA40-6EE4BAB3355C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAE8BB7C-19FA-4DF9-AA40-6EE4BAB3355C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAE8BB7C-19FA-4DF9-AA40-6EE4BAB3355C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DC28588-D48E-441B-B0DE-405BA903ECEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DC28588-D48E-441B-B0DE-405BA903ECEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DC28588-D48E-441B-B0DE-405BA903ECEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DC28588-D48E-441B-B0DE-405BA903ECEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6BC97DC-39B6-441E-98CF-22652B9DC51E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6BC97DC-39B6-441E-98CF-22652B9DC51E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6BC97DC-39B6-441E-98CF-22652B9DC51E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6BC97DC-39B6-441E-98CF-22652B9DC51E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{B6BC97DC-39B6-441E-98CF-22652B9DC51E} = {59D797DE-1389-437C-920B-D48A0D267CB6}
 		{6DC28588-D48E-441B-B0DE-405BA903ECEB} = {59D797DE-1389-437C-920B-D48A0D267CB6}
+		{B6BC97DC-39B6-441E-98CF-22652B9DC51E} = {59D797DE-1389-437C-920B-D48A0D267CB6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {667803A2-D710-4D8B-89C1-777B08B15F2A}
