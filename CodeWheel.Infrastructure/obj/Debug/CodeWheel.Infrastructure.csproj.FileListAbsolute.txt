@@ -1,4 +1,0 @@
-D:\workspace\dotnet\CodeWheel\CodeWheel.Infrastructure\bin\Debug\CodeWheel.Infrastucture.dll
-D:\workspace\dotnet\CodeWheel\CodeWheel.Infrastructure\bin\Debug\CodeWheel.Infrastucture.pdb
-D:\workspace\dotnet\CodeWheel\CodeWheel.Infrastructure\obj\Debug\CodeWheel.Infrastucture.dll
-D:\workspace\dotnet\CodeWheel\CodeWheel.Infrastructure\obj\Debug\CodeWheel.Infrastucture.pdb
