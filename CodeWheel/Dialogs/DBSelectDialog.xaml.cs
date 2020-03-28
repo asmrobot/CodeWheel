@@ -1,4 +1,4 @@
-﻿using CodeWheel.Model.DB;
+﻿using CodeWheel.Infrastructure.DB;
 using CodeWheel.Utils;
 using CodeWheel.ViewModels;
 using System;

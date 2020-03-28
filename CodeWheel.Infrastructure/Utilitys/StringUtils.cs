@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CodeWheel.Utils
+namespace CodeWheel.Infrastructure.Utilitys
 {
     public static class StringUtils
     {

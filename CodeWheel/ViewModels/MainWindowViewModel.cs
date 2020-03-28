@@ -4,51 +4,42 @@ using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
 using System.Windows;
-using CodeWheel.Model;
+using CodeWheel.Infrastructure;
 using CodeWheel.Utils;
-using CodeWheel.Model.DB;
+using CodeWheel.Infrastructure.DB;
+using System.IO;
 
 namespace CodeWheel.ViewModels
 {
     public class MainWindowViewModel:NotificationObject
     {
 
-        public MainWindowViewModel(RazorProvider Provider)
+        public MainWindowViewModel()
         {
-
-            this.m_TemplateList = new ObservableCollection<TemplateInfo>();
-            
-            //加载模板
-            Provider.LoadTemplate();
-
-            for (int i = 0; i < Provider.Templates.Count; i++)
+            foreach (var template in ApplicationGlobal.Instance.TemplateProvider.Templates)
             {
-                var tinfo = Provider.Templates[i].GetTemplateInfo();
-                if (tinfo != null)
-                {
-                    tinfo.Vars = Provider.GetVarInfo(tinfo.ViewModelType);
-                    this.m_TemplateList.Add(tinfo);
-                }
+                this.templates.Add(template);
+
             }
         }
 
-        private ObservableCollection<TemplateInfo> m_TemplateList;
+        private ObservableCollection<TemplateBase> templates= new ObservableCollection<TemplateBase>();
 
         /// <summary>
         /// 模板列表
         /// </summary>
-        public ObservableCollection<TemplateInfo> TemplateList
+        public ObservableCollection<TemplateBase> Templates
         {
             get
             {
-                return m_TemplateList;
+                return templates;
             }
             set
             {
-                if (m_TemplateList != value)
+                if (templates != value)
                 {
-                    m_TemplateList = value;
-                    this.RaisePropertyChanged("TemplateList");
+                    templates = value;
+                    this.RaisePropertyChanged("Templates");
                 }
             }
         }
@@ -120,17 +111,6 @@ namespace CodeWheel.ViewModels
             }
         }
 
-        /// <summary>
-        /// 向表列表添加一个表
-        /// </summary>
-        /// <param name="tableName"></param>
-        public void AddTalbe(string tableName)
-        {
-            TableSelectModel model = new TableSelectModel();
-            model.IsSelected = true;
-            model.TableName = tableName;
-            this.Tables.Add(model);
-        }
 
         /// <summary>
         /// 获取所有选中的表
@@ -169,6 +149,27 @@ namespace CodeWheel.ViewModels
                 {
                     connectionString = value;
                     this.RaisePropertyChanged("ConnectionString");
+                }
+            }
+        }
+
+        private string saveDir=Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"codegen");
+        /// <summary>
+        /// 代码保存路径
+        /// </summary>
+        public string SaveDir
+        {
+            get
+            {
+                return saveDir;
+            }
+
+            set
+            {
+                if (saveDir != value)
+                {
+                    saveDir = value;
+                    this.RaisePropertyChanged("SaveDir");
                 }
             }
         }

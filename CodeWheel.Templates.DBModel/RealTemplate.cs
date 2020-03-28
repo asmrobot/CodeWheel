@@ -1,5 +1,5 @@
-﻿using CodeWheel.Model;
-using CodeWheel.Model.DB;
+﻿using CodeWheel.Infrastructure;
+using CodeWheel.Infrastructure.DB;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,51 +12,64 @@ namespace CodeWheel.Templates.DBModel
     /// <summary>
     /// 数据库实体类生成
     /// </summary>
-    public class RealTemplate : ITemplate
+    public class RealTemplate : TemplateBase
     {
-        public const string KEY = "数据库实体";
-        public bool CreateFiles(out string msg,RunTemplateDelegate method, object parameters)
-        {
-            msg = string.Empty;
-            UIVO entity = parameters as UIVO;
-            
-            //if (string.IsNullOrWhiteSpace(entity.SavePath))
-            //{
-            //    msg = "保存路径不能为空";
-            //    return false;
-            //}
-            
-            //if (entity.Database == null)
-            //{
-            //    msg = "选择的数据库不存在";
-            //    return false;
-            //}
-            
-            //for (int i = 0; i < entity.Database.Tables.Count; i++)
-            //{
-            //    entity.CurrentTable = entity.Database.Tables[i];
-            //    string file = Path.Combine(entity.SavePath, entity.ClassPre+entity.CurrentTable.UpperCamelName + ".cs");
-                
-            //    if (!method(file, KEY, typeof(DataEntity), entity))
-            //    {
-            //        continue;
-            //    }
-            //}
+        public const string TEMPLATE_NAME = "数据库实体";
 
-            return true;
+        public override string Name
+        {
+            get
+            {
+                return TEMPLATE_NAME;
+            }
         }
 
-        public TemplateInfo GetTemplateInfo()
+        private string templateContent = string.Empty;
+        /// <summary>
+        /// razor模型内容
+        /// </summary>
+        public override string TemplateContent
         {
-            TemplateInfo info = new TemplateInfo();
-            Assembly asm = System.Reflection.Assembly.GetAssembly(this.GetType());
-            Stream stream = asm.GetManifestResourceStream(string.Concat(asm.GetName().Name, ".TemplateFile.cshtml"));
-            StreamReader reader = new StreamReader(stream);
-            info.TemplateContent = reader.ReadToEnd();
-            stream.Close();
-            info.Name = KEY;
-            info.ViewModelType = typeof(UIVO);
-            return info;
+            get
+            {
+                if (string.IsNullOrEmpty(templateContent))
+                {
+                    Assembly asm = System.Reflection.Assembly.GetAssembly(this.GetType());
+                    using (Stream stream = asm.GetManifestResourceStream(string.Concat(asm.GetName().Name, ".TemplateFile.cshtml")))
+                    {
+                        StreamReader reader = new StreamReader(stream);
+                        templateContent = reader.ReadToEnd();
+                    }
+                }
+                return templateContent;
+            }
+        }
+
+        public override Type ViewModelType
+        {
+            get
+            {
+                return typeof(UIVO);
+            }
+        }
+
+        public override bool CreateFiles(ref string msg, string saveDir, List<TableMeta> tables, GenerateFileDelegate generateFileFunc, UIVOBase vo)
+        {
+            msg = string.Empty;
+            UIVO viewModel = vo as UIVO;
+
+            for (int i = 0; i < tables.Count; i++)
+            {
+                vo.CurrentTable = tables[i];
+                string file = Path.Combine(saveDir, viewModel.ClassPre + vo.CurrentTable.UpperCamelName + ".cs");
+
+                if (!generateFileFunc(file, TEMPLATE_NAME, typeof(UIVO), viewModel))
+                {
+                    continue;
+                }
+            }
+
+            return true;
         }
     }
 }

@@ -8,7 +8,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Reflection;
-using CodeWheel.Model;
+using CodeWheel.Infrastructure;
+using CodeWheel.Infrastructure.DB;
 
 namespace CodeWheel.Utils
 {
@@ -17,38 +18,30 @@ namespace CodeWheel.Utils
 
         public RazorProvider()
         {
-            Templates = new List<Model.ITemplate>();
-            RunService = RunServiceAction;
-                
+            
         }
         /// <summary>
         /// 模板
         /// </summary>
-        public List<Model.ITemplate> Templates
+        public List<Infrastructure.TemplateBase> Templates
         {
             get; set;
         }
 
-        /// <summary>
-        /// 生成模板函数
-        /// </summary>
-        public RunTemplateDelegate RunService
-        {
-            get;set;
-        }
+
         /// <summary>
         /// 保存文件
         /// </summary>
-        /// <param name="saveFilePath"></param>
-        /// <param name="key"></param>
+        /// <param name="savePath"></param>
+        /// <param name="name"></param>
         /// <param name="modelType"></param>
         /// <param name="model"></param>
-        private bool RunServiceAction(string saveFilePath,string key, Type modelType, object model)
+        public bool GenerateFile(string savePath,string name, Type modelType, UIVOBase model)
         {
             try
             {
-                var content = Engine.Razor.Run(key, modelType, model);
-                File.WriteAllText(saveFilePath, content, System.Text.Encoding.UTF8);
+                var content = Engine.Razor.Run(name, modelType, model);
+                File.WriteAllText(savePath, content, System.Text.Encoding.UTF8);
                 return true;
             }
             catch
@@ -64,11 +57,11 @@ namespace CodeWheel.Utils
         /// </summary>
         /// <param name="templateName"></param>
         /// <returns></returns>
-        public Model.ITemplate GetTemplate(string templateName)
+        public Infrastructure.TemplateBase GetTemplate(string templateName)
         {
             for (int i = 0; i < this.Templates.Count; i++)
             {
-                if (this.Templates[i].GetTemplateInfo().Name == templateName)
+                if (this.Templates[i].Name == templateName)
                 {
                     return this.Templates[i];
                 }
@@ -80,10 +73,15 @@ namespace CodeWheel.Utils
         /// 加载
         /// </summary>
         /// <returns></returns>
-        public bool LoadTemplate()
+        public bool Initialize()
         {
-            string BasePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates");
-            DirectoryInfo dir = new DirectoryInfo(BasePath);
+            string basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates");
+            if (!Directory.Exists(basePath))
+            {
+                throw new DirectoryNotFoundException("template base dir");
+            }
+
+            DirectoryInfo dir = new DirectoryInfo(basePath);
 
             FileInfo[] files = dir.GetFiles("*.dll", SearchOption.AllDirectories);
             if (files == null || files.Length <= 0)
@@ -91,39 +89,30 @@ namespace CodeWheel.Utils
                 return false;
             }
 
-            for (int i = 0; i < files.Length; i++)
+            Templates = new List<Infrastructure.TemplateBase>();
+            foreach (var file in files)
             {
                 try
                 {
                     //加载DLL，每个DLL里查找ITemplate
-                    Assembly asm = Assembly.LoadFrom(files[i].FullName);
-                    Type[] ts = asm.GetTypes().Where(t => t.GetInterfaces().Contains(typeof(Model.ITemplate))).ToArray();
+                    Assembly asm = Assembly.LoadFrom(file.FullName);
+                    Type[] templates = asm.GetTypes().Where(t => t.BaseType==typeof(Infrastructure.TemplateBase)).ToArray();
 
-                    if (ts == null)
+                    if (templates == null)
                     {
                         continue;
                     }
-                    for (int t = 0; t < ts.Length; t++)
+                    for (int i = 0; i < templates.Length; i++)
                     {
                         //找到后实例化
-                        Model.ITemplate template = Activator.CreateInstance(ts[t]) as Model.ITemplate;
+                        Infrastructure.TemplateBase template = Activator.CreateInstance(templates[i]) as Infrastructure.TemplateBase;
                         if (template == null)
                         {
                             continue;
                         }
-                        
-                        
-                        
 
                         //编译模板
-                        TemplateInfo tinf = template.GetTemplateInfo();
-                        if (tinf == null)
-                        {
-                            continue;
-                        }
-                        tinf.Vars = GetVarInfo(tinf.ViewModelType);
-
-                        if (!Compile(tinf))
+                        if (!Compile(template))
                         {
                             continue;
                         }
@@ -133,7 +122,7 @@ namespace CodeWheel.Utils
                         Templates.Add(template);
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     if (e is TemplateCompilationException)
                     {
@@ -141,40 +130,9 @@ namespace CodeWheel.Utils
                     }
                     continue;
                 }
-
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// 得到类型的变量信息
-        /// </summary>
-        /// <param name="modelType"></param>
-        /// <returns></returns>
-        internal List<VarInfoAttribute> GetVarInfo(Type modelType)
-        {
-            List<VarInfoAttribute> list = new List<VarInfoAttribute>();
-
-            if (modelType != null)
-            {
-                PropertyInfo[] propertys = modelType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-                foreach (PropertyInfo item in propertys)
-                {
-                    //填充tinf.Vars
-                    object[] attribtes = item.GetCustomAttributes(typeof(VarInfoAttribute), false);
-                    if (attribtes.Length >= 1)
-                    {
-                        VarInfoAttribute attr = attribtes[0] as VarInfoAttribute;
-                        if (attr != null)
-                        {
-                            attr.VarName = item.Name;
-                            list.Add(attr);
-                        }
-                    }
-                }
-            }
-            return list;
         }
 
 
@@ -183,15 +141,19 @@ namespace CodeWheel.Utils
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public bool Compile(TemplateInfo info)
+        public bool Compile(Infrastructure.TemplateBase template)
         {
-            if (string.IsNullOrEmpty(info.TemplateContent))
+            if (template == null)
+            {
+                return false;
+            }
+            if (string.IsNullOrEmpty(template.TemplateContent))
             {
                 return false;
             }
 
             InitRazorEngine();
-            Engine.Razor.Compile(info.TemplateContent, info.Name, info.ViewModelType);
+            Engine.Razor.Compile(template.TemplateContent, template.Name, template.ViewModelType);
             return true;
         }
 

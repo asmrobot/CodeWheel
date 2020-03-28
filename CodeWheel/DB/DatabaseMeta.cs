@@ -1,10 +1,10 @@
-﻿using CodeWheel.Model.DB.Providers;
+﻿using CodeWheel.Infrastructure.DB.Providers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodeWheel.Model.DB
+namespace CodeWheel.Infrastructure.DB
 {
 
     public enum DBType

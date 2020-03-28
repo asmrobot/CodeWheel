@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodeWheel.Model.DB
+namespace CodeWheel.Infrastructure.DB
 {
     /// <summary>
     /// 行无数据集合
@@ -19,9 +19,9 @@ namespace CodeWheel.Model.DB
         {
             foreach (var item in columns)
             {
-                if (!this.m_list.ContainsKey(item.ColumnName))
+                if (!this.list.ContainsKey(item.ColumnName))
                 {
-                    m_list.Add(item.ColumnName, item);
+                    list.Add(item.ColumnName, item);
                 }
             }
         }
@@ -61,13 +61,51 @@ namespace CodeWheel.Model.DB
 
 
 
-        private Dictionary<string, ColumnMeta> m_list = new Dictionary<string, ColumnMeta>();
+
+        /// <summary>
+        /// 得到所有非主键列
+        /// </summary>
+        /// <param name="columns"></param>
+        /// <returns></returns>
+        public ColumnMetaCollection GetNoPrimaryKeyColumns()
+        {
+            return new ColumnMetaCollection(this.Where((col) => { return !col.IsKey; }));
+
+        }
+
+        /// <summary>
+        /// 得到所有非主键列
+        /// </summary>
+        /// <param name="columns"></param>
+        /// <returns></returns>
+        public ColumnMetaCollection GetPrimaryKeyColumns()
+        {
+            return new ColumnMetaCollection(this.Where((col) => { return col.IsKey; }));
+        }
+
+
+        /// <summary>
+        /// 得到所有非主键列
+        /// </summary>
+        /// <param name="columns"></param>
+        /// <returns></returns>
+        public ColumnMeta GetPrimaryKeyColumn()
+        {
+            return this.Where((col) => { return col.IsKey; }).FirstOrDefault();
+        }
+
+
+
+
+
+
+        private Dictionary<string, ColumnMeta> list = new Dictionary<string, ColumnMeta>();
 
         public int Count
         {
             get
             {
-                return m_list.Count;
+                return list.Count;
             }
         }
 
@@ -77,31 +115,31 @@ namespace CodeWheel.Model.DB
             {
                 return;
             }
-            if (m_list.ContainsKey(meta.ColumnName))
+            if (list.ContainsKey(meta.ColumnName))
             {
                 return;
             }
 
-            m_list.Add(meta.ColumnName, meta);
+            list.Add(meta.ColumnName, meta);
         }
 
         public void Remove(string fieldName)
         {
-            if (!m_list.ContainsKey(fieldName))
+            if (!list.ContainsKey(fieldName))
             {
                 return;
             }
 
-            m_list.Remove(fieldName);
+            list.Remove(fieldName);
         }
 
         public ColumnMeta this[string fieldName]
         {
             get
             {
-                if (m_list.ContainsKey(fieldName))
+                if (list.ContainsKey(fieldName))
                 {
-                    return m_list[fieldName];
+                    return list[fieldName];
                 }
                 return null;
             }
@@ -109,12 +147,12 @@ namespace CodeWheel.Model.DB
 
         public IEnumerator<ColumnMeta> GetEnumerator()
         {
-            return this.m_list.Values.GetEnumerator();
+            return this.list.Values.GetEnumerator();
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.m_list.Values.GetEnumerator();
+            return this.list.Values.GetEnumerator();
         }
     }
 }

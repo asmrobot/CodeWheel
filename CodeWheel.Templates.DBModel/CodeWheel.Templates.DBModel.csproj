@@ -50,9 +50,10 @@
     <EmbeddedResource Include="TemplateFile.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodeWheel\CodeWheel.csproj">
-      <Project>{9b8c29a6-a3a5-4bef-a7ae-c92eef8d6d33}</Project>
-      <Name>CodeWheel</Name>
+    <ProjectReference Include="..\CodeWheel.Infrastructure\CodeWheel.Infrastructure.csproj">
+      <Project>{cae8bb7c-19fa-4df9-aa40-6ee4bab3355c}</Project>
+      <Name>CodeWheel.Infrastructure</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

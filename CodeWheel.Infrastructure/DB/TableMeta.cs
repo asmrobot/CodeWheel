@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CodeWheel.Utils;
+using CodeWheel.Infrastructure.Utilitys;
 
-namespace CodeWheel.Model.DB
+namespace CodeWheel.Infrastructure.DB
 {
     /// <summary>
     /// 表原数据

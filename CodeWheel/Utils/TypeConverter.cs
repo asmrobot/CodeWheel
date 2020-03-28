@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodeWheel.Model
+namespace CodeWheel.Infrastructure
 {
     public class TypeConverter
     {

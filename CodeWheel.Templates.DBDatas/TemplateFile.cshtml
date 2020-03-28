@@ -12,10 +12,9 @@ namespace @Model.NameSpace
 {
     public partial class @(Model.CurrentTable.UpperCamelName + Model.ClassFix)
     {
-    /// <summary>
+        /// <summary>
         /// 增加并输出ID
-        ///
-    </summary>
+        ///</summary>
     public static bool Create(out Object id,@(Model.ClassPre + Model.CurrentTable.UpperCamelName) @(Model.CurrentTable.LowerCamelName))
     {
     string sql="Insert into `@(Model.CurrentTable.TableName)` (@Model.InsertParameterList(false)) values (@Model.InsertArgumentList(false))";

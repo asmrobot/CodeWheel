@@ -1,5 +1,5 @@
-﻿using CodeWheel.Model;
-using CodeWheel.Model.DB;
+﻿using CodeWheel.Infrastructure;
+using CodeWheel.Infrastructure.DB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,9 +52,5 @@ namespace CodeWheel.Templates.DBDatas
         [VarInfoAttribute("类型后缀", "DB.Instance", VarType.SingleString)]
         public string DBHelper { get; set; }
         #endregion
-
-
-
-
     }
 }

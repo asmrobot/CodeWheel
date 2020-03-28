@@ -1,7 +1,7 @@
 ﻿using CodeWheel.Controls;
 using CodeWheel.Dialogs;
-using CodeWheel.Model;
-using CodeWheel.Model.DB;
+using CodeWheel.Infrastructure;
+using CodeWheel.Infrastructure.DB;
 using CodeWheel.Utils;
 using CodeWheel.ViewModels;
 using System;
@@ -32,19 +32,15 @@ namespace CodeWheel
             get;set;
         }
 
-        public RazorProvider Provider
-        {
-            get;set;
-        }
-
         public MainWindow()
         {
             InitializeComponent();
-            Provider = new RazorProvider();
-            this.ViewModel = new MainWindowViewModel(Provider);
+            
+            this.ViewModel = new MainWindowViewModel();
             this.DataContext = this.ViewModel;
         }
 
+        #region 模板参数界面
         /// <summary>
         /// 生成收集变量控件
         /// </summary>
@@ -74,7 +70,7 @@ namespace CodeWheel
         private void ClearElement()
         {
             //清空原模板变量
-            foreach (var item in this._VarPanel.Children)
+            foreach (var item in this.varPanel.Children)
             {
                 UserControl uc = item as UserControl;
                 if (uc != null && !string.IsNullOrEmpty(uc.Name))
@@ -82,101 +78,80 @@ namespace CodeWheel
                     this.UnregisterName(uc.Name);
                 }
             }
-            this._VarPanel.Children.Clear();
-            this._VarPanel.RowDefinitions.Clear();
+            this.varPanel.Children.Clear();
+            this.varPanel.RowDefinitions.Clear();
         }
-            
+        #endregion
+
+        #region Events
+        
+
+        /// <summary>
+        /// 选择代码保存目录 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ChoiceDir_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
+            fbd.ShowDialog();
+            if (fbd.SelectedPath != string.Empty)
+            {
+                this.ViewModel.SaveDir = fbd.SelectedPath;
+            }
+
+
+            //// 打开选择文件对话框,在WPF中， OpenFileDialog位于Microsoft.Win32名称空间
+            //Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
+            //dialog.Filter = "文件|*.*";
+            //if (dialog.ShowDialog() == true)
+            //{
+            //    string filePath = dialog.FileName;
+            //}
+
+        }
+
+        /// <summary>
+        /// 打开代码保存目录 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenDir_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("explorer.exe", this.ViewModel.SaveDir);
+        }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
             if (this.ViewModel.TemplateSelectIndex >= 0)
             {
-                TemplateInfo info = this.ViewModel.TemplateList[this.ViewModel.TemplateSelectIndex];
-                if (info == null|| info.Vars==null ||info.Vars.Count<=0)
+                TemplateBase template = this.ViewModel.Templates[this.ViewModel.TemplateSelectIndex];
+                if (template == null || template.Vars == null || template.Vars.Count <= 0)
                 {
                     return;
                 }
                 ClearElement();
 
                 //添加新模板变量
-                for (int i = 0; i < info.Vars.Count; i++)
+                for (int i = 0; i < template.Vars.Count; i++)
                 {
                     RowDefinition def = new RowDefinition();
                     def.Height = new GridLength(30, GridUnitType.Auto);
-                    this._VarPanel.RowDefinitions.Add(def);
+                    this.varPanel.RowDefinitions.Add(def);
 
                     TextBlock title = new TextBlock();
-                    title.Text = info.Vars[i].VarTitle;
+                    title.Text = template.Vars[i].VarTitle;
                     Grid.SetColumn(title, 0);
                     Grid.SetRow(title, i);
-                    title.VerticalAlignment = VerticalAlignment.Center;     
-                    this._VarPanel.Children.Add(title);
+                    title.VerticalAlignment = VerticalAlignment.Center;
+                    this.varPanel.Children.Add(title);
 
-                    UserControl element = CreateElement(info.Vars[i]);
+                    UserControl element = CreateElement(template.Vars[i]);
                     Grid.SetColumn(element, 2);
-                    Grid.SetRow(element, i);  
-                    this._VarPanel.Children.Add(element);
-                }                
-            }
-        }
-
-
-        private void GenericeCodeButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.ViewModel.TemplateSelectIndex >= 0)
-            {
-                TemplateInfo info = this.ViewModel.TemplateList[this.ViewModel.TemplateSelectIndex];
-                if (info == null || info.Vars == null)
-                {
-                    return;
-                }
-
-                object viewmodel=System.Activator.CreateInstance(info.ViewModelType);
-                //向页面传值
-                for (int i = 0; i < info.Vars.Count; i++)
-                {
-                    CWControlBase uc = this.FindName(info.Vars[i].VarName) as CWControlBase;
-                    if (uc == null)
-                    {
-                        info.Vars[i].VarData = null;
-                        continue;
-                    }
-                    PropertyInfo property=info.ViewModelType.GetProperty(info.Vars[i].VarName);
-                    if (property == null)
-                    {
-                        continue;
-                    }
-                    property.SetValue(viewmodel, uc.GetValue(),null);
-                }
-
-                var template = this.Provider.GetTemplate(info.Name);
-                if (template == null)
-                {
-                    return;
-                }
-
-                string msg = string.Empty;
-                if (template.CreateFiles(out msg,this.Provider.RunService, viewmodel))
-                {
-                    MessageBox.Show("生成成功");
-                }
-                else
-                {
-                    MessageBox.Show(msg);
+                    Grid.SetRow(element, i);
+                    this.varPanel.Children.Add(element);
                 }
             }
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-            this.ViewModel.AddTalbe(DateTime.Now.ToString());
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show($"已选中表个数:{this.ViewModel.GetSelectedTables().Count.ToString()}");
         }
 
         /// <summary>
@@ -229,5 +204,95 @@ namespace CodeWheel
                 this.ViewModel.Tables.Add(new TableSelectModel() { IsSelected = true, TableName = item.TableName,Meta=item });
             }
         }
+
+        /// <summary>
+        /// 生成代码
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GenerateCode_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.ViewModel.TemplateSelectIndex >= 0)
+            {
+                TemplateBase template = this.ViewModel.Templates[this.ViewModel.TemplateSelectIndex];
+                if (template == null || template.Vars == null)
+                {
+                    return;
+                }
+
+                //必须保存文件
+                if (template.MustChoiceSaveDir)
+                {
+                    if (string.IsNullOrEmpty(this.ViewModel.SaveDir))
+                    {
+                        MessageBox.Show("保存路径不能为空");
+                        return;
+                    }
+
+                    if (!System.IO.Directory.Exists(this.ViewModel.SaveDir))
+                    {
+                        MessageBox.Show("保存路径不存在");
+                        return;
+                    }
+                }
+
+                //必须选择表
+                if (template.MustChoiceTables)
+                {
+                    if (this.ViewModel.GetSelectedTables().Count <= 0)
+                    {
+                        MessageBox.Show("必须要选择数据表");
+                        return;
+                    }
+                }
+
+                UIVOBase vo = Activator.CreateInstance(template.ViewModelType) as UIVOBase;
+                if (vo == null)
+                {
+                    MessageBox.Show("生成失败");
+                    return;
+                }
+
+                //页面值
+                for (int i = 0; i < template.Vars.Count; i++)
+                {
+                    CWControlBase uc = this.FindName(template.Vars[i].VarName) as CWControlBase;
+                    if (uc == null)
+                    {
+                        template.Vars[i].VarData = null;
+                        continue;
+                    }
+                    PropertyInfo property = template.ViewModelType.GetProperty(template.Vars[i].VarName);
+                    if (property == null)
+                    {
+                        continue;
+                    }
+                    property.SetValue(vo, uc.GetValue(), null);
+                }
+
+                
+
+                string msg = string.Empty;
+                if (template.CreateFiles(ref msg, this.ViewModel.SaveDir, this.ViewModel.GetSelectedTables(), ApplicationGlobal.Instance.TemplateProvider.GenerateFile, vo))
+                {
+                    MessageBox.Show("生成成功");
+                }
+                else
+                {
+                    MessageBox.Show(msg);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 生成数据库文档
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GenerateDBDocument_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        #endregion
     }
 }

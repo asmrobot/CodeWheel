@@ -1,10 +1,11 @@
-﻿using CodeWheel.Extensions;
+﻿using CodeWheel.Infrastructure.Extensions;
+using CodeWheel.Infrastructure.DB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodeWheel.Model.DB
+namespace CodeWheel.Infrastructure
 {
     /// <summary>
     /// 界面view object基类
@@ -16,39 +17,6 @@ namespace CodeWheel.Model.DB
         /// 当前数据表
         /// </summary>
         public TableMeta CurrentTable { get; set; }
-
-
-        /// <summary>
-        /// 得到所有非主键列
-        /// </summary>
-        /// <param name="columns"></param>
-        /// <returns></returns>
-        public ColumnMetaCollection GetNoPrimaryKeyColumns(ColumnMetaCollection columns)
-        {
-            return new ColumnMetaCollection(columns.Where((col) => { return !col.IsKey; }));
-
-        }
-
-        /// <summary>
-        /// 得到所有非主键列
-        /// </summary>
-        /// <param name="columns"></param>
-        /// <returns></returns>
-        public ColumnMetaCollection GetPrimaryKeyColumns(ColumnMetaCollection columns)
-        {
-            return new ColumnMetaCollection(columns.Where((col) => { return col.IsKey; }));
-        }
-
-
-        /// <summary>
-        /// 得到所有非主键列
-        /// </summary>
-        /// <param name="columns"></param>
-        /// <returns></returns>
-        public ColumnMeta GetPrimaryKeyColumn(ColumnMetaCollection columns)
-        {
-            return columns.Where((col) => { return col.IsKey; }).FirstOrDefault();
-        }
 
 
         /// <summary>
@@ -180,7 +148,6 @@ namespace CodeWheel.Model.DB
         /// <returns></returns>
         public string CreateSqlWhere()
         {
-            
             return this.CurrentTable.Columns.GetKeyCollection().Concat((col) => { return " `" + col.ColumnName + "`=@" + col.ColumnName; }, "and");
         }
 

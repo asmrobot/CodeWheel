@@ -6,7 +6,7 @@ using MySql.Data.MySqlClient;
 using System.Data;
 using System.IO;
 
-namespace CodeWheel.Model.DB.Providers
+namespace CodeWheel.Infrastructure.DB.Providers
 {
     public class MySqlProvider:IDBProvider
     {

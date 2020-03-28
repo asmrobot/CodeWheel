@@ -1,5 +1,5 @@
-﻿using CodeWheel.Model;
-using CodeWheel.Model.DB;
+﻿using CodeWheel.Infrastructure;
+using CodeWheel.Infrastructure.DB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
