@@ -7,6 +7,21 @@ namespace CodeWheel.Infrastructure
 {
     public class TypeConverter
     {
+        public static Int32 StringToInt(string str, Int32 defVal)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                return defVal;
+            }
+            Int32 defV = defVal;
+            if (Int32.TryParse(str, out defV))
+            {
+                return defV;
+            }
+            return defVal;
+        }
+
+
 
         public static Int32 ObjectToInt(object obj, Int32 defVal)
         {

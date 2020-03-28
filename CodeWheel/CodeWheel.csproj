@@ -82,14 +82,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ApplicationGlobal.cs" />
-    <Compile Include="Controls\CWControlBase.cs" />
-    <Compile Include="Controls\CWMutilTextControl.xaml.cs">
+    <Compile Include="UI\Controls\CWControlBase.cs" />
+    <Compile Include="UI\Controls\CWMutilTextControl.xaml.cs">
       <DependentUpon>CWMutilTextControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CWSingleTextControl.xaml.cs">
+    <Compile Include="UI\Controls\CWSingleTextControl.xaml.cs">
       <DependentUpon>CWSingleTextControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\DBSelectDialog.xaml.cs">
+    <Compile Include="UI\DBSelectDialog.xaml.cs">
       <DependentUpon>DBSelectDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="DB\DatabaseMeta.cs" />
@@ -98,25 +98,27 @@
     <Compile Include="DB\Providers\ProviderFactory.cs" />
     <Compile Include="DB\Providers\SqliteProvider.cs" />
     <Compile Include="DB\Providers\SqlServerProvider.cs" />
+    <Compile Include="Utils\Coding.cs" />
+    <Compile Include="Utils\StateProvider.cs" />
     <Compile Include="Utils\TypeConverter.cs" />
     <Compile Include="Utils\RazorProvider.cs" />
     <Compile Include="ViewModels\DBSelectDialogViewModel.cs" />
     <Compile Include="ViewModels\DelegateCommand.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\NotificationObject.cs" />
-    <Page Include="Controls\CWMutilTextControl.xaml">
+    <Page Include="UI\Controls\CWMutilTextControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\CWSingleTextControl.xaml">
+    <Page Include="UI\Controls\CWSingleTextControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Dialogs\DBSelectDialog.xaml">
+    <Page Include="UI\DBSelectDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="UI\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -124,7 +126,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="UI\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>

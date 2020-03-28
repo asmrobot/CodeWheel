@@ -58,6 +58,16 @@ namespace CodeWheel
             {
                 MessageBox.Show("加载模板失败");
             }
+
+            //加载状态
+            try
+            {
+                ApplicationGlobal.Instance.States.Initialize();
+            }
+            catch(Exception  ex)
+            {
+                MessageBox.Show("加载状态失败");
+            }
             
 
             //设为对话框关闭程序关闭

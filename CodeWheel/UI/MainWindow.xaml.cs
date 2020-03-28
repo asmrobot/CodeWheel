@@ -132,9 +132,19 @@ namespace CodeWheel
                 }
                 ClearElement();
 
+                VarInfoAttribute varInfo = null;
+                string val = string.Empty;
                 //添加新模板变量
                 for (int i = 0; i < template.Vars.Count; i++)
                 {
+                    //读取以往的状态
+                    varInfo = template.Vars[i];
+                    val=ApplicationGlobal.Instance.States.GetValue($"{template.Name}.{varInfo.VarName}");
+                    if (!string.IsNullOrEmpty(val))
+                    {
+                        varInfo.VarDefault = val;
+                    }
+
                     RowDefinition def = new RowDefinition();
                     def.Height = new GridLength(30, GridUnitType.Auto);
                     this.varPanel.RowDefinitions.Add(def);
@@ -146,7 +156,7 @@ namespace CodeWheel
                     title.VerticalAlignment = VerticalAlignment.Center;
                     this.varPanel.Children.Add(title);
 
-                    UserControl element = CreateElement(template.Vars[i]);
+                    UserControl element = CreateElement(varInfo);
                     Grid.SetColumn(element, 2);
                     Grid.SetRow(element, i);
                     this.varPanel.Children.Add(element);
@@ -253,6 +263,8 @@ namespace CodeWheel
                     return;
                 }
 
+                string key = string.Empty;
+                string val = string.Empty;
                 //页面值
                 for (int i = 0; i < template.Vars.Count; i++)
                 {
@@ -267,6 +279,10 @@ namespace CodeWheel
                     {
                         continue;
                     }
+                    val = uc.GetValue()==null?string.Empty :uc.GetValue().ToString();
+                    key = $"{template.Name}.{template.Vars[i].VarName}";
+                    ApplicationGlobal.Instance.States.SetValue(key, val);
+
                     property.SetValue(vo, uc.GetValue(), null);
                 }
 

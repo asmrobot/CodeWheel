@@ -16,11 +16,18 @@ namespace CodeWheel.ViewModels
 
         public MainWindowViewModel()
         {
+            //保存路径
+            this.saveDir = ApplicationGlobal.Instance.States.GetValue("SaveDir");
+            this.dbTypeSelectIndex = TypeConverter.StringToInt(ApplicationGlobal.Instance.States.GetValue("DBTypeSelectIndex"),0);
+            this.connectionString = ApplicationGlobal.Instance.States.GetValue("ConnectionString");
+            
+            //初始化模板列表
             foreach (var template in ApplicationGlobal.Instance.TemplateProvider.Templates)
             {
                 this.templates.Add(template);
-
             }
+
+
         }
 
         private ObservableCollection<TemplateBase> templates= new ObservableCollection<TemplateBase>();
@@ -45,7 +52,7 @@ namespace CodeWheel.ViewModels
         }
 
 
-        private int m_TemplateSelectIndex =-1;
+        private int templateSelectIndex =-1;
         /// <summary>
         /// 选择模板索引
         /// </summary>
@@ -53,42 +60,18 @@ namespace CodeWheel.ViewModels
         {
             get
             {
-                return m_TemplateSelectIndex ;
+                return templateSelectIndex ;
             }
 
             set
             {
-                if (m_TemplateSelectIndex  != value)
+                if (templateSelectIndex  != value)
                 {
-                    m_TemplateSelectIndex  = value;
+                    templateSelectIndex  = value;
                     this.RaisePropertyChanged("TemplateSelectIndex");
                 }
             }
         }
-
-
-        private string m_TemplateVarSettingPage = "Dialogs/EmptyPage.xaml";
-        /// <summary>
-        /// 模板变量设置界面
-        /// </summary>
-        public string TemplateVarSettingPage
-        {
-            get
-            {
-                return m_TemplateVarSettingPage;
-            }
-
-            set
-            {
-                if (m_TemplateVarSettingPage != value)
-                {
-                    m_TemplateVarSettingPage = value;
-                    this.RaisePropertyChanged("TemplateVarSettingPage");
-                }
-            }
-        }
-
-
 
         private ObservableCollection<TableSelectModel> tables = new ObservableCollection<TableSelectModel>();
         /// <summary>
@@ -147,13 +130,14 @@ namespace CodeWheel.ViewModels
             {
                 if (connectionString != value)
                 {
+                    ApplicationGlobal.Instance.States.SetValue("ConnectionString", value);
                     connectionString = value;
                     this.RaisePropertyChanged("ConnectionString");
                 }
             }
         }
 
-        private string saveDir=Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"codegen");
+        private string saveDir=string.Empty;
         /// <summary>
         /// 代码保存路径
         /// </summary>
@@ -168,6 +152,7 @@ namespace CodeWheel.ViewModels
             {
                 if (saveDir != value)
                 {
+                    ApplicationGlobal.Instance.States.SetValue("SaveDir", value);
                     saveDir = value;
                     this.RaisePropertyChanged("SaveDir");
                 }
@@ -190,6 +175,7 @@ namespace CodeWheel.ViewModels
             {
                 if (this.dbTypeSelectIndex != value)
                 {
+                    ApplicationGlobal.Instance.States.SetValue("DBTypeSelectIndex", value.ToString());
                     this.dbTypeSelectIndex = value;
                     this.RaisePropertyChanged("DBTypeSelectIndex");
                 }

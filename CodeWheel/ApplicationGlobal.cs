@@ -57,6 +57,24 @@ namespace CodeWheel
                 return templateProvider;
             }
         }
+
+        private StateProvider states;
+        /// <summary>
+        /// 界面状态提供器
+        /// </summary>
+        public StateProvider States
+        {
+            get
+            {
+                if (states == null)
+                {
+                    states = new StateProvider();
+                }
+                return states;
+            }
+        }
+
+
         
         #region 单例
         private static object mInstanceLocker = new object();
