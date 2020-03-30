@@ -307,7 +307,14 @@ namespace CodeWheel
         /// <param name="e"></param>
         private void GenerateDBDocument_Click(object sender, RoutedEventArgs e)
         {
-
+            if(WordHelper.ExportDBWordFile(System.IO.Path.Combine(this.ViewModel.SaveDir, "db_struct_"+DateTime.Now.ToString("yyyymmdd_HHmmss")+".docx"), this.ViewModel.GetSelectedTables()))
+            {
+                MessageBox.Show("导出成功");
+            }
+            else
+            {
+                MessageBox.Show("导出失败");
+            }
         }
         #endregion
     }

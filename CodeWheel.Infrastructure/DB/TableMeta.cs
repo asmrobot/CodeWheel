@@ -51,6 +51,11 @@ namespace CodeWheel.Infrastructure.DB
         public ColumnMeta PrimaryKey { get; set; }
 
         /// <summary>
+        /// 表注释
+        /// </summary>
+        public string Comment { get; set; }
+
+        /// <summary>
         /// 列
         /// </summary>
         public ColumnMetaCollection Columns

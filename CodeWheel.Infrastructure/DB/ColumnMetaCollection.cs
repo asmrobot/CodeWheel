@@ -145,6 +145,31 @@ namespace CodeWheel.Infrastructure.DB
             }
         }
 
+        public ColumnMeta this[Int32 index]
+        {
+            get
+            {
+                if (index > this.Count - 1 || index < 0)
+                {
+                    throw new IndexOutOfRangeException("索引超出");
+                }
+
+
+                foreach (var item in this)
+                {
+                    if (index == 0)
+                    {
+                        return item;
+                    }
+                    index--;    
+                }
+
+                throw new IndexOutOfRangeException("索引严重超出");
+            }
+        }
+
+
+
         public IEnumerator<ColumnMeta> GetEnumerator()
         {
             return this.list.Values.GetEnumerator();
