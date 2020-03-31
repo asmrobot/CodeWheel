@@ -24,6 +24,14 @@ namespace CodeWheel.Utils
         public static bool ExportDBWordFile(string savePath, List<TableMeta> tables)
         {
             XWPFDocument doc = new XWPFDocument();
+            doc.Document.body.sectPr = new CT_SectPr();
+            //doc.Document.body.sectPr.pgSz.h = 16838;
+            doc.Document.body.sectPr.pgSz.w = 11906;
+            doc.Document.body.sectPr.pgMar.left = 1000;
+            doc.Document.body.sectPr.pgMar.right = 1000;
+            doc.Document.body.sectPr.pgMar.top = "150";
+            doc.Document.body.sectPr.pgMar.bottom = "150";
+
 
             //标题
             XWPFParagraph p = doc.CreateParagraph();
@@ -86,9 +94,20 @@ namespace CodeWheel.Utils
 
             //表格
             XWPFTable grid=document.CreateTable(table.Columns.Count+1,5);
-            XWPFTableRow row=grid.GetRow(0);
+            
+            
+
+            grid.Width = 2500;
+            grid.SetColumnWidth(0, 256 * 2);
+            grid.SetColumnWidth(1, 256 * 2);
+            grid.SetColumnWidth(2, 256 * 1);
+            grid.SetColumnWidth(3, 256 * 1);
+            grid.SetColumnWidth(4, 256 * 4);
+
+            
 
             //设置表头
+            XWPFTableRow row = grid.GetRow(0);
             row.GetCell(0).SetParagraph(SetCellText(document, grid, "字段名"));
             row.GetCell(1).SetParagraph(SetCellText(document, grid, "类型"));
             row.GetCell(2).SetParagraph(SetCellText(document, grid, "是否主键"));
