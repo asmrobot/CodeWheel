@@ -75,6 +75,10 @@ namespace CodeWheel.Infrastructure.DB.Providers
                         if (comments.ContainsKey(columnMeta.ColumnName))
                         {
                             columnMeta.Comment = comments[columnMeta.ColumnName];
+                            if (!string.IsNullOrEmpty(columnMeta.Comment))
+                            {
+                                columnMeta.Comment = columnMeta.Comment.Replace("\r", "").Replace("\n", "");
+                            }
                         }
 
 

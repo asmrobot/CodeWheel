@@ -37,7 +37,7 @@ namespace @Model.NameSpace
         {
             string sql="Insert into `@(Model.CurrentTable.TableName)` (@Model.InsertParameterList(false)) values (@Model.InsertArgumentList(false))";
             DbParameter[] parameters = new DbParameter[] {
-            @(Model.CreateDbParameterList(Model.DBHelper, Model.CurrentTable.LowerCamelName, false))
+                @(Model.CreateDbParameterList(Model.DBHelper, Model.CurrentTable.LowerCamelName, false))
             };
 
             if (@(Model.DBHelper).ExecuteNonQuery(sql, CommandType.Text, parameters) > 0)
@@ -68,39 +68,39 @@ namespace @Model.NameSpace
        
 
 
-            /// <summary>
-            /// 增加
-            ///</summary>
-            public static bool CreateContainID(@(Model.ClassPre + Model.CurrentTable.UpperCamelName) @(Model.CurrentTable.LowerCamelName))
-            {
+        /// <summary>
+        /// 增加
+        ///</summary>
+        public static bool CreateContainID(@(Model.ClassPre + Model.CurrentTable.UpperCamelName) @(Model.CurrentTable.LowerCamelName))
+        {
             string sql="Insert into `@(Model.CurrentTable.TableName)` (@Model.InsertParameterList(true)) values (@Model.InsertArgumentList(true))";
             DbParameter[] parameters = new DbParameter[] {
-            @(Model.CreateDbParameterList(Model.DBHelper, Model.CurrentTable.LowerCamelName, true))
+                @(Model.CreateDbParameterList(Model.DBHelper, Model.CurrentTable.LowerCamelName, true))
             };
 
             if (@(Model.DBHelper).ExecuteNonQuery(sql, CommandType.Text, parameters) > 0)
             {
-            return true;
+                return true;
             }
             return false;
-            }
+        }
 
-            /// <summary>
-            /// 增加
-            ///</summary>
-            public async static Task<bool> CreateContainIDAsync(@(Model.ClassPre + Model.CurrentTable.UpperCamelName) @(Model.CurrentTable.LowerCamelName))
-            {
-                string sql="Insert into `@(Model.CurrentTable.TableName)` (@Model.InsertParameterList(true)) values (@Model.InsertArgumentList(true))";
-                DbParameter[] parameters = new DbParameter[] {
+        /// <summary>
+        /// 增加
+        ///</summary>
+        public async static Task<bool> CreateContainIDAsync(@(Model.ClassPre + Model.CurrentTable.UpperCamelName) @(Model.CurrentTable.LowerCamelName))
+        {
+            string sql="Insert into `@(Model.CurrentTable.TableName)` (@Model.InsertParameterList(true)) values (@Model.InsertArgumentList(true))";
+            DbParameter[] parameters = new DbParameter[] {
                 @(Model.CreateDbParameterList(Model.DBHelper, Model.CurrentTable.LowerCamelName, true))
-                };
+            };
 
-                if (await @(Model.DBHelper).ExecuteNonQueryAsync(sql, CommandType.Text, parameters) > 0)
-                {
+            if (await @(Model.DBHelper).ExecuteNonQueryAsync(sql, CommandType.Text, parameters) > 0)
+            {
                 return true;
-                }
-                return false;
             }
+            return false;
+        }
 
 
 
@@ -108,103 +108,95 @@ namespace @Model.NameSpace
             @foreach (var col in Model.CurrentTable.Columns.GetKeyCollection())
             {
                 <text>
-                    /// <summary>
-                    /// 删除通过@(col.ColumnName)
-                    ///</summary>
-                    public static bool RemoveBy@(col.UpperCamelColumnName)(@(col.FieldTypeName) @(col.LowerCamelColumnName))
-                    {
-                    string sql="delete from `@(Model.CurrentTable.TableName)`  where `@(col.ColumnName)`=@@@(col.ColumnName)";
-                    DbParameter[] parameters = new DbParameter[] {
-                    @(Model.DBHelper).MakeInParam ("@@@(col.ColumnName)",DbType .@col.FieldTypeName,@col.ColumnSize,@col.LowerCamelColumnName )
-                    };
+        /// <summary>
+        /// 删除通过@(col.ColumnName)
+        ///</summary>
+        public static bool RemoveBy@(col.UpperCamelColumnName)(@(col.FieldTypeName) @(col.LowerCamelColumnName))
+        {
+            string sql="delete from `@(Model.CurrentTable.TableName)`  where `@(col.ColumnName)`=@@@(col.ColumnName)";
+            DbParameter[] parameters = new DbParameter[] {
+                @(Model.DBHelper).MakeInParam ("@@@(col.ColumnName)",DbType .@col.FieldTypeName,@col.ColumnSize,@col.LowerCamelColumnName )
+            };
 
-                    if (@(Model.DBHelper).ExecuteNonQuery(sql, CommandType.Text, parameters) > 0)
-                    {
-                    return true;
-                    }
-                    return false;
-                    }
+            if (@(Model.DBHelper).ExecuteNonQuery(sql, CommandType.Text, parameters) > 0)
+            {
+                return true;
+            }
+            return false;
+        }
 
-                    /// <summary>
-                        /// 异步删除通过@(col.ColumnName)
-                        ///</summary>
-                    public async static Task<bool>
-                        RemoveBy@(col.UpperCamelColumnName)Async(@(col.FieldTypeName) @(col.LowerCamelColumnName))
-                        {
-                        string sql="delete from `@(Model.CurrentTable.TableName)`  where `@(col.ColumnName)`=@@@(col.ColumnName)";
-                        DbParameter[] parameters = new DbParameter[] {
-                        @(Model.DBHelper).MakeInParam ("@@@(col.ColumnName)",DbType .@col.FieldTypeName,@col.ColumnSize,@col.LowerCamelColumnName )
-                        };
+        /// <summary>
+        /// 异步删除通过@(col.ColumnName)
+        ///</summary>
+        public async static Task<bool> RemoveBy@(col.UpperCamelColumnName)Async(@(col.FieldTypeName) @(col.LowerCamelColumnName))
+        {
+            string sql="delete from `@(Model.CurrentTable.TableName)`  where `@(col.ColumnName)`=@@@(col.ColumnName)";
+            DbParameter[] parameters = new DbParameter[] {
+                @(Model.DBHelper).MakeInParam ("@@@(col.ColumnName)",DbType .@col.FieldTypeName,@col.ColumnSize,@col.LowerCamelColumnName )
+            };
 
-                        if (await @(Model.DBHelper).ExecuteNonQueryAsync(sql, CommandType.Text, parameters) > 0)
-                        {
-                        return true;
-                        }
-                        return false;
-                        }
+            if (await @(Model.DBHelper).ExecuteNonQueryAsync(sql, CommandType.Text, parameters) > 0)
+            {
+                return true;
+            }
+            return false;
+        }
                 </text>
 
             }
 
 
 
-            /// <summary>
-                /// 修改
-                /// </summary>
-            public static bool Update(@(Model.ClassPre + Model.CurrentTable.UpperCamelName) @(Model.CurrentTable.LowerCamelName))
-            {
+        /// <summary>
+        /// 修改
+        /// </summary>
+        public static bool Update(@(Model.ClassPre + Model.CurrentTable.UpperCamelName) @(Model.CurrentTable.LowerCamelName))
+        {
             string sql="Update `@Model.CurrentTable.TableName` set @Model.CreateUpdateArgumentList(false) where @Model.CreateSqlWhere()";
             DbParameter[] parameters = new DbParameter[] {
-            @(Model.CreateDbParameterList(Model.DBHelper, Model.CurrentTable.LowerCamelName, true))
+                @(Model.CreateDbParameterList(Model.DBHelper, Model.CurrentTable.LowerCamelName, true))
             };
 
             if (@(Model.DBHelper).ExecuteNonQuery(sql, CommandType.Text, parameters) > 0)
             {
-            return true;
+                return true;
             }
             return false;
-            }
+        }
 
 
-            /// <summary>
-                /// 异步修改
-                /// </summary>
-            public async static Task<bool>
-                UpdateAsync(@(Model.ClassPre + Model.CurrentTable.UpperCamelName) @(Model.CurrentTable.LowerCamelName))
-                {
-                string sql="Update `@Model.CurrentTable.TableName` set @Model.CreateUpdateArgumentList(false) where @Model.CreateSqlWhere()";
-                DbParameter[] parameters = new DbParameter[] {
+        /// <summary>
+        /// 异步修改
+        /// </summary>
+        public async static Task<bool> UpdateAsync(@(Model.ClassPre + Model.CurrentTable.UpperCamelName) @(Model.CurrentTable.LowerCamelName))
+        {
+            string sql="Update `@Model.CurrentTable.TableName` set @Model.CreateUpdateArgumentList(false) where @Model.CreateSqlWhere()";
+            DbParameter[] parameters = new DbParameter[] {
                 @(Model.CreateDbParameterList(Model.DBHelper, Model.CurrentTable.LowerCamelName, true))
-                };
+            };
 
-                if (await @(Model.DBHelper).ExecuteNonQueryAsync(sql, CommandType.Text, parameters) > 0)
-                {
+            if (await @(Model.DBHelper).ExecuteNonQueryAsync(sql, CommandType.Text, parameters) > 0)
+            {
                 return true;
-                }
-                return false;
-                }
+            }
+            return false;
+        }
 
+        /// <summary>
+        /// 读取全部列表
+        /// </summary>
+        public static List<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)> ReadAll()
+        {
+            string sql="select * from `@(Model.CurrentTable.TableName)`";
+            return @(Model.DBHelper).Query<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)>(sql);
+        }
 
-
-
-                /// <summary>
-                    /// 读取全部列表
-                    /// </summary>
-                public static List<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)>
-                    ReadAll()
-                    {
-                    string sql="select * from `@(Model.CurrentTable.TableName)`";
-                    return @(Model.DBHelper).Query<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)>
-                        (sql);
-                        }
-
-                        /// <summary>
-                            /// 异步读取全部列表
-                            /// </summary>
-                        public async static Task<List<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)>> ReadAllAsync()
+        /// <summary>
+        /// 异步读取全部列表
+        /// </summary>
+        public async static Task<List<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)>> ReadAllAsync()
         {
 			string sql="select * from `@(Model.CurrentTable.TableName)`";
-
 			return await @(Model.DBHelper).QueryAsync<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)>(sql);
         }
 
@@ -305,6 +297,46 @@ namespace @Model.NameSpace
 
             return await @(Model.DBHelper).QueryOneAsync<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)>(sql, CommandType.Text, parameters);
         }
+
+        /// <summary>
+        /// 通过主键确定是否存在
+        /// </summary>
+        public static bool Exists(@col.FieldTypeName @col.LowerCamelColumnName)
+        {
+            string sql = "select count(1) from `@Model.CurrentTable.TableName` where `@col.ColumnName`=@@@col.ColumnName";
+            DbParameter[] parameters = new DbParameter[] {
+                @Model.CreateDbParameter(Model.DBHelper, "",col)
+            };
+
+            object ret=AriesDB.Instance.ExecuteScalar(sql, CommandType.Text, parameters);
+            Int32 count = TypeConverter.ObjectToInt(ret, 0);
+            if (count > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 异步通过主键确定是否存在
+        /// </summary>
+        public async static Task<bool> ExistsAsync(@col.FieldTypeName @col.LowerCamelColumnName)
+        {
+            string sql = "select count(1) from `@Model.CurrentTable.TableName` where `@col.ColumnName`=@@@col.ColumnName";
+            DbParameter[] parameters = new DbParameter[] {
+                @Model.CreateDbParameter(Model.DBHelper, "",col)
+            };
+
+            object ret=await AriesDB.Instance.ExecuteScalarAsync(sql, CommandType.Text, parameters);
+            Int32 count = TypeConverter.ObjectToInt(ret, 0);
+            if (count > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
         </text>
 
         @*foreach (var other in Model.GetNoKeyColumn())
@@ -353,11 +385,7 @@ namespace @Model.NameSpace
     }
 
 
-        @*@foreach (var col in Model.CurrentTable.Columns)
-            {
-                @:private @(col.FieldTypeName) m_@(col.ColumnName);
-                @:public @(col.FieldTypeName) @(col.ColumnName){get;set;}
-            }*@
+        
 
     }
 }
