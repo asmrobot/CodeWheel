@@ -148,7 +148,7 @@ namespace CodeWheel.Infrastructure
         /// <returns></returns>
         public string CreateSqlWhere()
         {
-            return this.CurrentTable.Columns.GetKeyCollection().Concat((col) => { return " `" + col.ColumnName + "`=@" + col.ColumnName; }, "and");
+            return this.CurrentTable.Columns.GetKeyCollection().Concat((col) => { return " `" + col.ColumnName + "`=@" + col.ColumnName; }, " and ");
         }
 
         /// <summary>
