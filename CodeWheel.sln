@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeWheel.Templates.DBDatas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeWheel.Templates.DBModel", "Templates\CodeWheel.Templates.DBModel\CodeWheel.Templates.DBModel.csproj", "{B6BC97DC-39B6-441E-98CF-22652B9DC51E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeWheel.Templates.DBService", "Templates\CodeWheel.Templates.DBService\CodeWheel.Templates.DBService.csproj", "{8820B8C6-88CF-426B-B152-ACE229255606}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{B6BC97DC-39B6-441E-98CF-22652B9DC51E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6BC97DC-39B6-441E-98CF-22652B9DC51E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6BC97DC-39B6-441E-98CF-22652B9DC51E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8820B8C6-88CF-426B-B152-ACE229255606}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8820B8C6-88CF-426B-B152-ACE229255606}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8820B8C6-88CF-426B-B152-ACE229255606}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8820B8C6-88CF-426B-B152-ACE229255606}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -42,6 +48,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{6DC28588-D48E-441B-B0DE-405BA903ECEB} = {59D797DE-1389-437C-920B-D48A0D267CB6}
 		{B6BC97DC-39B6-441E-98CF-22652B9DC51E} = {59D797DE-1389-437C-920B-D48A0D267CB6}
+		{8820B8C6-88CF-426B-B152-ACE229255606} = {59D797DE-1389-437C-920B-D48A0D267CB6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {667803A2-D710-4D8B-89C1-777B08B15F2A}

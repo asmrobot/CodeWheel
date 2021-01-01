@@ -19,7 +19,7 @@ namespace CodeWheel.Templates.DBModel
         /// <summary>
         /// 命名空间
         /// </summary>
-        [VarInfoAttribute("命名空间", "Namespace.Tables", VarType.SingleString)]
+        [VarInfoAttribute("命名空间", "Namespace.Models", VarType.SingleString)]
         public string NameSpace { get; set; }
 
         

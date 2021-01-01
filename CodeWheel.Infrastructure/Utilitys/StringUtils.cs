@@ -6,26 +6,29 @@ namespace CodeWheel.Infrastructure.Utilitys
     {
         private static string ToCamel(string val, bool firstUpper)
         {
-            string str = string.Empty;
+            string name = string.Empty;
             bool flag = firstUpper;
-            for (int i = 0; i < val.Length; i++)
+            string[] sections = val.Split("_".ToCharArray(),StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < sections.Length; i++)
             {
-                if (val[i] == '_')
+                if (i == 0 && !firstUpper)
                 {
-                    flag = true;
-                }
-                else if (flag)
-                {
-                    char ch = val[i];
-                    str = str + ch.ToString().ToUpper();
-                    flag = false;
+                    name = sections[i];
                 }
                 else
                 {
-                    str = str + val[i].ToString();
+                    if (sections[i].Length <= 2)
+                    {
+                        name += sections[i].ToUpper();
+                    }
+                    else
+                    {
+                        name += sections[i][0].ToString().ToUpper() + sections[i].Substring(1);
+                    }
                 }
             }
-            return str;
+            
+            return name;
         }
 
         public static string ToLowerCamel(string val)

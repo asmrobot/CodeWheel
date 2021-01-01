@@ -1,0 +1,308 @@
+﻿@model CodeWheel.Templates.DBService.UIVO
+@Model.ImportNameSpace
+using System;
+using System.Data;
+using System.Data.Common;
+using System.Collections.Generic;
+using ZTImage;
+using System.Threading.Tasks;
+using Dapper;
+using ZTImage.DbLite;
+
+
+namespace @Model.NameSpace
+{
+    public partial class @(Model.CurrentTable.UpperCamelName + Model.ClassFix)
+    {
+        
+        public @(Model.CurrentTable.UpperCamelName + Model.ClassFix)(DbConnectionFactory conectionFactory)
+        {
+            this.conFactory = conectionFactory;
+        }
+        
+        
+        private DbConnectionFactory conFactory;
+
+        public static readonly @(Model.ClassPre + Model.CurrentTable.UpperCamelName)[] EmptyArray = new @(Model.ClassPre + Model.CurrentTable.UpperCamelName)[0];
+
+
+        /// <summary>
+        /// 同步增加
+        /// </summary>
+        public Int32 Create(@(Model.ClassPre + Model.CurrentTable.UpperCamelName) @(Model.CurrentTable.LowerCamelName))
+        {
+            const string sql="Insert into `@(Model.CurrentTable.TableName)` (@Model.InsertParameterList(false)) values (@Model.InsertArgumentList(false))";
+            using (var con = conFactory.CreateConnection())
+            {
+                Int32 affectRow = con.Execute(sql, @(Model.CurrentTable.LowerCamelName));
+                return affectRow;
+            }
+        }
+
+
+
+
+        /// <summary>
+        /// 异步增加
+        /// </summary>
+        public async Task<Int32> CreateAsync(@(Model.ClassPre + Model.CurrentTable.UpperCamelName) @(Model.CurrentTable.LowerCamelName))
+        {
+            const string sql="Insert into `@(Model.CurrentTable.TableName)` (@Model.InsertParameterList(false)) values (@Model.InsertArgumentList(false))";
+            using (var con = conFactory.CreateConnection())
+            {
+                Int32 affectRow = await con.ExecuteAsync(sql, @(Model.CurrentTable.LowerCamelName));
+                return affectRow;
+            }
+        }
+
+
+        @foreach (var col in Model.CurrentTable.Columns.GetKeyCollection())
+        {
+        <text>
+
+
+        /// <summary>
+        /// 删除通过@(col.ColumnName)
+        /// </summary>
+        public Int32 RemoveBy@(col.UpperCamelColumnName)(@(col.FieldTypeName) @(col.LowerCamelColumnName))
+        {
+            const string sql="delete from `@(Model.CurrentTable.TableName)`  where `@(col.ColumnName)`=@@@(col.ColumnName)";
+            using (var con = conFactory.CreateConnection())
+            {
+                Int32 affectRow = con.Execute(sql, new { @(col.ColumnName)=@(col.LowerCamelColumnName)});
+                return affectRow;
+            }
+        }
+
+        /// <summary>
+        /// 异步删除通过@(col.ColumnName)
+        /// </summary>
+        public async Task<Int32> RemoveBy@(col.UpperCamelColumnName)Async(@(col.FieldTypeName) @(col.LowerCamelColumnName))
+        {
+            const string sql="delete from `@(Model.CurrentTable.TableName)`  where `@(col.ColumnName)`=@@@(col.ColumnName)";
+
+            using (var con = conFactory.CreateConnection())
+            {
+                Int32 affectRow = await con.ExecuteAsync(sql, new { @(col.ColumnName)=@(col.LowerCamelColumnName)});
+                return affectRow;
+            }
+        }
+
+
+
+        </text>
+        }
+
+
+
+        /// <summary>
+        /// 同步修改
+        /// </summary>
+        public Int32 Update(@(Model.ClassPre + Model.CurrentTable.UpperCamelName) @(Model.CurrentTable.LowerCamelName))
+        {
+            const string sql="Update `@Model.CurrentTable.TableName` set @Model.CreateUpdateArgumentList(false) where @Model.CreateSqlWhere()";
+            using (var con = conFactory.CreateConnection())
+            {
+                Int32 affectRow = con.Execute(sql, @(Model.CurrentTable.LowerCamelName));
+                return affectRow;
+            }
+        }
+
+
+        /// <summary>
+        /// 异步修改
+        /// </summary>
+        public async Task<Int32> UpdateAsync(@(Model.ClassPre + Model.CurrentTable.UpperCamelName) @(Model.CurrentTable.LowerCamelName))
+        {
+            const string sql="Update `@Model.CurrentTable.TableName` set @Model.CreateUpdateArgumentList(false) where @Model.CreateSqlWhere()";
+            
+            using (var con = conFactory.CreateConnection())
+            {
+                Int32 affectRow = await con.ExecuteAsync(sql, @(Model.CurrentTable.LowerCamelName));
+                return affectRow;
+            }
+        }
+
+
+
+        /// <summary>
+        /// 读取全部列表
+        /// </summary>
+        public IEnumerable<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)> ReadAll()
+        {
+            const string sql="select * from `@(Model.CurrentTable.TableName)`";
+
+            using (var con = conFactory.CreateConnection())
+            {
+                return  con.Query<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)>(sql);
+            }
+        }
+
+
+        /// <summary>
+        /// 异步读取全部列表
+        /// </summary>
+        public async Task<IEnumerable<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)>> ReadAllAsync()
+        {
+			const string sql="select * from `@(Model.CurrentTable.TableName)`";
+
+            using (var con = conFactory.CreateConnection())
+            {
+                return  await con.QueryAsync<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)>(sql);
+            }
+        }
+
+
+
+        /// <summary>
+        /// 分页读取列表
+        /// </summary>
+        public IEnumerable<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)> ReadList(out Int32 fieldCount,Int32 pageIndex,Int32 pageSize)
+        {
+			const string sql="select count(1) from `@(Model.CurrentTable.TableName)`";
+            using (var con = conFactory.CreateConnection())
+            {
+                fieldCount=con.ExecuteScalar<Int32>(sql);
+            }
+            if (fieldCount <= 0)
+            {
+                return EmptyArray;
+            }
+
+            Int32 pageCount = fieldCount / pageSize;
+            if ((fieldCount % pageSize) > 0)
+            {
+                pageCount++;
+            }
+
+            if (pageIndex <1)
+            {
+                pageIndex = 1;
+            }
+            if (pageIndex > pageCount)
+            {
+                pageIndex = pageCount;
+            }
+
+            const string listSql = "select * from `@(Model.CurrentTable.TableName)` limit @@pageindex,@@pagesize";
+            using (var con = conFactory.CreateConnection())
+            {
+                return  con.Query<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)>(listSql,new { pageindex= (pageIndex - 1) * pageSize ,pagesize=pageSize});
+            }
+        }
+
+
+        /// <summary>
+        /// 异步分页读取列表
+        /// </summary>
+        public async Task<(IEnumerable<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)>,Int32)> ReadListAsync(Int32 pageIndex,Int32 pageSize)
+        {
+
+            Int32 fieldCount =0;
+			const string sql="select count(1) from `@(Model.CurrentTable.TableName)`";
+            using (var con = conFactory.CreateConnection())
+            {
+                fieldCount=await con.ExecuteScalarAsync<Int32>(sql);
+            }
+
+            if (fieldCount <= 0)
+            {
+                
+                return (EmptyArray,0);
+            }
+
+            Int32 pageCount = fieldCount / pageSize;
+            if ((fieldCount % pageSize) > 0)
+            {
+                pageCount++;
+            }
+
+            if (pageIndex <1)
+            {
+                pageIndex = 1;
+            }
+            if (pageIndex > pageCount)
+            {
+                pageIndex = pageCount;
+            }
+
+
+            const string listSql = "select * from `@(Model.CurrentTable.TableName)` limit @@pageindex,@@pagesize";
+            using (var con = conFactory.CreateConnection())
+            {
+                var list=await con.QueryAsync<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)>(listSql,new { pageindex= (pageIndex - 1) * pageSize ,pagesize=pageSize});
+
+                return (list,fieldCount);
+            }
+        }
+
+        @foreach(var col in Model.GetKeyColumn())
+        {
+        <text>
+
+
+        /// <summary>
+        /// 通过主键读取实体
+        /// </summary>
+        public @(Model.ClassPre + Model.CurrentTable.UpperCamelName) ReadBy@(col.UpperCamelColumnName)(@col.FieldTypeName @col.LowerCamelColumnName)
+        {
+            string sql= "select * from `@Model.CurrentTable.TableName`  where `@col.ColumnName`=@@@col.ColumnName";
+
+            using (var con = conFactory.CreateConnection())
+            {
+                return con.QueryFirst<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)>(sql,new { @col.ColumnName=@col.LowerCamelColumnName});
+            }
+        }
+
+        /// <summary>
+        /// 异步通过主键读取实体
+        /// </summary>
+        public async Task<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)> ReadBy@(col.UpperCamelColumnName)Async(@col.FieldTypeName @col.LowerCamelColumnName)
+        {
+            string sql= "select * from `@Model.CurrentTable.TableName`  where `@col.ColumnName`=@@@col.ColumnName";
+            using (var con = conFactory.CreateConnection())
+            {
+                return await con.QueryFirstAsync<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)>(sql,new { @col.ColumnName=@col.LowerCamelColumnName});
+            }
+        }
+
+        /// <summary>
+        /// 通过主键确定是否存在
+        /// </summary>
+        public bool ExistsBy@(col.UpperCamelColumnName)(@col.FieldTypeName @col.LowerCamelColumnName)
+        {
+            const string sql = "select count(1) from `@Model.CurrentTable.TableName` where `@col.ColumnName`=@@@col.ColumnName";
+            using (var con = conFactory.CreateConnection())
+            {
+                Int32 count= con.ExecuteScalar<Int32>(sql, new { @col.ColumnName = @col.LowerCamelColumnName });
+                if (count > 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 异步通过主键确定是否存在
+        /// </summary>
+        public async Task<bool> ExistsBy@(col.UpperCamelColumnName)Async(@col.FieldTypeName @col.LowerCamelColumnName)
+        {
+            const string sql = "select count(1) from `@Model.CurrentTable.TableName` where `@col.ColumnName`=@@@col.ColumnName";
+
+            using (var con = conFactory.CreateConnection())
+            {
+                Int32 count= await con.ExecuteScalarAsync<Int32>(sql, new { @col.ColumnName = @col.LowerCamelColumnName });
+                if (count > 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+
+        </text>        
+        }
+    }
+}
