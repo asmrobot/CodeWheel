@@ -12,30 +12,31 @@ using ZTImage.DbLite;
 
 namespace @Model.NameSpace
 {
-    public partial class @(Model.CurrentTable.UpperCamelName + Model.ClassFix)
+    public partial class @(Model.CurrentTable.UpperCamelName + Model.ClassFix) : ServiceBase
     {
-        
-        public @(Model.CurrentTable.UpperCamelName + Model.ClassFix)(DbConnectionFactory conectionFactory)
-        {
-            this.conFactory = conectionFactory;
-        }
-        
-        
-        private DbConnectionFactory conFactory;
-
         public static readonly @(Model.ClassPre + Model.CurrentTable.UpperCamelName)[] EmptyArray = new @(Model.ClassPre + Model.CurrentTable.UpperCamelName)[0];
 
 
         /// <summary>
         /// 同步增加
         /// </summary>
-        public Int32 Create(@(Model.ClassPre + Model.CurrentTable.UpperCamelName) @(Model.CurrentTable.LowerCamelName))
+        public Int32 Create(@(Model.ClassPre + Model.CurrentTable.UpperCamelName) @(Model.CurrentTable.LowerCamelName),IDbTransaction transaction=null)
         {
-            const string sql="Insert into `@(Model.CurrentTable.TableName)` (@Model.InsertParameterList(false)) values (@Model.InsertArgumentList(false))";
-            using (var con = conFactory.CreateConnection())
+            const string sql="Insert into `@(Model.CurrentTable.TableName)` (@Model.InsertParameterList(true)) values (@Model.InsertArgumentList(true))";
+            bool needClose = true;
+            IDbConnection con = null;
+            try
             {
+                con = ConnectionWrap(transaction, out needClose);
                 Int32 affectRow = con.Execute(sql, @(Model.CurrentTable.LowerCamelName));
                 return affectRow;
+            }
+            finally
+            {
+                if (needClose && con != null&& con.State==ConnectionState.Open)
+                {
+                    con.Close();
+                }
             }
         }
 
@@ -45,13 +46,23 @@ namespace @Model.NameSpace
         /// <summary>
         /// 异步增加
         /// </summary>
-        public async Task<Int32> CreateAsync(@(Model.ClassPre + Model.CurrentTable.UpperCamelName) @(Model.CurrentTable.LowerCamelName))
+        public async Task<Int32> CreateAsync(@(Model.ClassPre + Model.CurrentTable.UpperCamelName) @(Model.CurrentTable.LowerCamelName),IDbTransaction transaction=null)
         {
-            const string sql="Insert into `@(Model.CurrentTable.TableName)` (@Model.InsertParameterList(false)) values (@Model.InsertArgumentList(false))";
-            using (var con = conFactory.CreateConnection())
+            const string sql="Insert into `@(Model.CurrentTable.TableName)` (@Model.InsertParameterList(true)) values (@Model.InsertArgumentList(true))";
+            bool needClose = true;
+            IDbConnection con = null;
+            try
             {
+                con = ConnectionWrap(transaction, out needClose);
                 Int32 affectRow = await con.ExecuteAsync(sql, @(Model.CurrentTable.LowerCamelName));
                 return affectRow;
+            }
+            finally
+            {
+                if (needClose && con != null&& con.State==ConnectionState.Open)
+                {
+                    con.Close();
+                }
             }
         }
 
@@ -64,27 +75,46 @@ namespace @Model.NameSpace
         /// <summary>
         /// 删除通过@(col.ColumnName)
         /// </summary>
-        public Int32 RemoveBy@(col.UpperCamelColumnName)(@(col.FieldTypeName) @(col.LowerCamelColumnName))
+        public Int32 RemoveBy@(col.UpperCamelColumnName)(@(col.FieldTypeName) @(col.LowerCamelColumnName),IDbTransaction transaction=null)
         {
             const string sql="delete from `@(Model.CurrentTable.TableName)`  where `@(col.ColumnName)`=@@@(col.ColumnName)";
-            using (var con = conFactory.CreateConnection())
+            bool needClose = true;
+            IDbConnection con = null;
+            try
             {
+                con = ConnectionWrap(transaction, out needClose);
                 Int32 affectRow = con.Execute(sql, new { @(col.ColumnName)=@(col.LowerCamelColumnName)});
                 return affectRow;
+            }
+            finally
+            {
+                if (needClose && con != null&& con.State==ConnectionState.Open)
+                {
+                    con.Close();
+                }
             }
         }
 
         /// <summary>
         /// 异步删除通过@(col.ColumnName)
         /// </summary>
-        public async Task<Int32> RemoveBy@(col.UpperCamelColumnName)Async(@(col.FieldTypeName) @(col.LowerCamelColumnName))
+        public async Task<Int32> RemoveBy@(col.UpperCamelColumnName)Async(@(col.FieldTypeName) @(col.LowerCamelColumnName),IDbTransaction transaction=null)
         {
             const string sql="delete from `@(Model.CurrentTable.TableName)`  where `@(col.ColumnName)`=@@@(col.ColumnName)";
-
-            using (var con = conFactory.CreateConnection())
+            bool needClose = true;
+            IDbConnection con = null;
+            try
             {
+                con = ConnectionWrap(transaction, out needClose);
                 Int32 affectRow = await con.ExecuteAsync(sql, new { @(col.ColumnName)=@(col.LowerCamelColumnName)});
                 return affectRow;
+            }
+            finally
+            {
+                if (needClose && con != null&& con.State==ConnectionState.Open)
+                {
+                    con.Close();
+                }
             }
         }
 
@@ -98,13 +128,23 @@ namespace @Model.NameSpace
         /// <summary>
         /// 同步修改
         /// </summary>
-        public Int32 Update(@(Model.ClassPre + Model.CurrentTable.UpperCamelName) @(Model.CurrentTable.LowerCamelName))
+        public Int32 Update(@(Model.ClassPre + Model.CurrentTable.UpperCamelName) @(Model.CurrentTable.LowerCamelName),IDbTransaction transaction=null)
         {
             const string sql="Update `@Model.CurrentTable.TableName` set @Model.CreateUpdateArgumentList(false) where @Model.CreateSqlWhere()";
-            using (var con = conFactory.CreateConnection())
+            bool needClose = true;
+            IDbConnection con = null;
+            try
             {
+                con = ConnectionWrap(transaction, out needClose);
                 Int32 affectRow = con.Execute(sql, @(Model.CurrentTable.LowerCamelName));
                 return affectRow;
+            }
+            finally
+            {
+                if (needClose && con != null&& con.State==ConnectionState.Open)
+                {
+                    con.Close();
+                }
             }
         }
 
@@ -112,14 +152,23 @@ namespace @Model.NameSpace
         /// <summary>
         /// 异步修改
         /// </summary>
-        public async Task<Int32> UpdateAsync(@(Model.ClassPre + Model.CurrentTable.UpperCamelName) @(Model.CurrentTable.LowerCamelName))
+        public async Task<Int32> UpdateAsync(@(Model.ClassPre + Model.CurrentTable.UpperCamelName) @(Model.CurrentTable.LowerCamelName),IDbTransaction transaction=null)
         {
             const string sql="Update `@Model.CurrentTable.TableName` set @Model.CreateUpdateArgumentList(false) where @Model.CreateSqlWhere()";
-            
-            using (var con = conFactory.CreateConnection())
+            bool needClose = true;
+            IDbConnection con = null;
+            try
             {
+                con = ConnectionWrap(transaction, out needClose);
                 Int32 affectRow = await con.ExecuteAsync(sql, @(Model.CurrentTable.LowerCamelName));
                 return affectRow;
+            }
+            finally
+            {
+                if (needClose && con != null&& con.State==ConnectionState.Open)
+                {
+                    con.Close();
+                }
             }
         }
 
@@ -246,11 +295,11 @@ namespace @Model.NameSpace
         /// </summary>
         public @(Model.ClassPre + Model.CurrentTable.UpperCamelName) ReadBy@(col.UpperCamelColumnName)(@col.FieldTypeName @col.LowerCamelColumnName)
         {
-            string sql= "select * from `@Model.CurrentTable.TableName`  where `@col.ColumnName`=@@@col.ColumnName";
+            const string sql= "select * from `@Model.CurrentTable.TableName`  where `@col.ColumnName`=@@@col.ColumnName";
 
             using (var con = conFactory.CreateConnection())
             {
-                return con.QueryFirst<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)>(sql,new { @col.ColumnName=@col.LowerCamelColumnName});
+                return con.QueryFirstOrDefaultAsync<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)>(sql,new { @col.ColumnName=@col.LowerCamelColumnName});
             }
         }
 
@@ -259,10 +308,10 @@ namespace @Model.NameSpace
         /// </summary>
         public async Task<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)> ReadBy@(col.UpperCamelColumnName)Async(@col.FieldTypeName @col.LowerCamelColumnName)
         {
-            string sql= "select * from `@Model.CurrentTable.TableName`  where `@col.ColumnName`=@@@col.ColumnName";
+            const string sql= "select * from `@Model.CurrentTable.TableName`  where `@col.ColumnName`=@@@col.ColumnName";
             using (var con = conFactory.CreateConnection())
             {
-                return await con.QueryFirstAsync<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)>(sql,new { @col.ColumnName=@col.LowerCamelColumnName});
+                return await con.QueryFirstOrDefaultAsync<@(Model.ClassPre + Model.CurrentTable.UpperCamelName)>(sql,new { @col.ColumnName=@col.LowerCamelColumnName});
             }
         }
 
