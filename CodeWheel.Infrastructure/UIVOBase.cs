@@ -72,7 +72,9 @@ namespace CodeWheel.Infrastructure
 
             return collection.Concat((col) => { return "`" + col.ColumnName + "`"; }, ",");
         }
-        
+
+
+
 
         /// <summary>
         /// 创建插入SQL实参列表
@@ -88,6 +90,26 @@ namespace CodeWheel.Infrastructure
                 collection = collection.GetNoKeyCollection();
             }
             return collection.Concat((col) => { return "@" + col.ColumnName; }, ",");
+        }
+
+
+
+
+
+        /// <summary>
+        /// 创建插入SQL实参列表
+        /// </summary>
+        /// <param name="columns"></param>
+        /// <param name="hasPrimaryKey">是否包含主键</param>
+        /// <returns></returns>
+        public string InsertUpperCamelArgumentList(bool hasKey)
+        {
+            ColumnMetaCollection collection = this.CurrentTable.Columns;
+            if (!hasKey)
+            {
+                collection = collection.GetNoKeyCollection();
+            }
+            return collection.Concat((col) => { return "@" + col.UpperCamelColumnName; }, ",");
         }
 
 
@@ -108,7 +130,20 @@ namespace CodeWheel.Infrastructure
             return collection.Concat((col) => { return "`"+col.ColumnName + "`=@" + col.ColumnName; }, ",");
         }
 
-        
+
+
+
+        public string CreateUpperCamelUpdateArgumentList(bool hasKey)
+        {
+            ColumnMetaCollection collection = this.CurrentTable.Columns;
+            if (!hasKey)
+            {
+                collection = collection.GetNoKeyCollection();
+            }
+
+            return collection.Concat((col) => { return "`" + col.ColumnName + "`=@" + col.UpperCamelColumnName; }, ",");
+        }
+
 
         /// <summary>
         /// 创建DBparameter列表
@@ -148,7 +183,7 @@ namespace CodeWheel.Infrastructure
         /// <returns></returns>
         public string CreateSqlWhere()
         {
-            return this.CurrentTable.Columns.GetKeyCollection().Concat((col) => { return " `" + col.ColumnName + "`=@" + col.ColumnName; }, " and ");
+            return this.CurrentTable.Columns.GetKeyCollection().Concat((col) => { return " `" + col.ColumnName + "`=@" + col.LowerCamelColumnName; }, " and ");
         }
 
         /// <summary>

@@ -100,7 +100,7 @@ using Dapper;
 using ZTImage.DbLite;
 
 
-namespace Zhuomi.Business
+namespace $namespace$
 {
     public partial class $classname$
     {
@@ -115,6 +115,7 @@ namespace Zhuomi.Business
             File.WriteAllText(dir, template
                 .Replace("$import_namespace$", viewModel.ImportNameSpace)
                 .Replace("$classname$", viewModel.CurrentTable.UpperCamelName + viewModel.ClassFix)
+                .Replace("$namespace$", viewModel.NameSpace)
                 );
 
         }
