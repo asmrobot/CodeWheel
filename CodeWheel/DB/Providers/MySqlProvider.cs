@@ -45,6 +45,7 @@ namespace CodeWheel.Infrastructure.DB.Providers
         public ColumnMetaCollection GetTableSchema(string table)
         {
             Dictionary<string, string> comments = GetColumnComment(table);
+            List<string> indexColumns = GetIndexColumns(table);
             ColumnMetaCollection metas = new ColumnMetaCollection();
             MySqlConnection connection = new MySqlConnection(this.ConnectionString);
             connection.Open();
@@ -81,6 +82,12 @@ namespace CodeWheel.Infrastructure.DB.Providers
                             }
                         }
 
+                        //主键没查询
+                        if (columnMeta.IsKey == false && indexColumns.Contains(columnMeta.ColumnName))
+                        {
+                            columnMeta.IsKey = true;
+                        }
+
 
 
                         if (dt.Rows[i][0].ToString().IndexOf(" ") > -1)
@@ -97,6 +104,7 @@ namespace CodeWheel.Infrastructure.DB.Providers
             connection.Close();
             return metas;
         }
+
 
 
         /// <summary>
@@ -137,6 +145,48 @@ namespace CodeWheel.Infrastructure.DB.Providers
             connection.Close();
 
             return dict;
+        }
+
+
+        /// <summary>
+        /// 获取每列的注释
+        /// </summary>
+        /// <param name="table"></param>
+        /// <returns></returns>
+        public List<string> GetIndexColumns(string table)
+        {
+
+            List<string> columns = new List<string>();
+            MySqlConnection connection = new MySqlConnection(this.ConnectionString);
+            connection.Open();
+
+            MySqlCommand cmd = new MySqlCommand($"show index from {table};", connection);
+            using (MySqlDataReader ddr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+            {
+
+                while (ddr != null && !ddr.IsClosed && ddr.Read())
+                {
+                    //得元数据
+                    Int32 ordinal = ddr.GetOrdinal("Non_unique");
+                    Int32 nonUnique = ddr.GetInt32(ordinal);
+                    if (nonUnique == 0)
+                    {
+                        //唯一索引
+                        ordinal = ddr.GetOrdinal("Column_name");
+                        string columnName = ddr.IsDBNull(ordinal) ? string.Empty : ddr.GetString(ordinal);
+
+                        if(columns.Contains(columnName)||string.IsNullOrEmpty(columnName))
+                        {
+                            continue;
+                        }
+                        columns.Add(columnName);
+                    }
+                }
+            }
+
+            connection.Close();
+
+            return columns;
         }
     }
 }

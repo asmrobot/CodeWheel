@@ -26,11 +26,6 @@ namespace CodeWheel.Templates.DBService
         public string NameSpace { get; set; }
 
 
-
-        
-
-
-
         /// <summary>
         /// 实体类前缀
         /// </summary>
