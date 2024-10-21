@@ -4,20 +4,21 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CAE8BB7C-19FA-4DF9-AA40-6EE4BAB3355C}</ProjectGuid>
+    <ProjectGuid>{8820B8C6-88CF-426B-B152-ACE229255606}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CodeWheel.Infrastucture</RootNamespace>
-    <AssemblyName>CodeWheel.Infrastucture</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>CodeWheel.Templates.DBService</RootNamespace>
+    <AssemblyName>CodeWheel.Templates.DBService</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\CodeWheel\bin\Templates\DBService\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -25,7 +26,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\CodeWheel\bin\Templates\DBService\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -41,17 +42,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DB\ColumnMeta.cs" />
-    <Compile Include="DB\ColumnMetaCollection.cs" />
-    <Compile Include="DB\TableMeta.cs" />
-    <Compile Include="GenerateFileDelegate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TemplateBase.cs" />
-    <Compile Include="UIVOBase.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Utilitys\StringUtils.cs" />
-    <Compile Include="VarInfoAttribute.cs" />
-    <Compile Include="VarType.cs" />
+    <Compile Include="RealTemplate.cs" />
+    <Compile Include="UIVO.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TemplateFile.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CodeWheel.Infrastructure\CodeWheel.Infrastructure.csproj">
+      <Project>{cae8bb7c-19fa-4df9-aa40-6ee4bab3355c}</Project>
+      <Name>CodeWheel.Infrastructure</Name>
+      <Private>False</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
